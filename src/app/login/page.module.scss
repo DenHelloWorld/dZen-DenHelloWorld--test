@@ -1,0 +1,12 @@
+.login-page {
+  composes: d-flex align-items-center justify-content-center min-vh-100 p-3 from global;
+
+  &__card {
+    composes: card shadow-sm p-4 w-100 from global;
+    max-width: 420px;
+  }
+
+  &__title {
+    composes: h4 mb-4 text-center fw-semibold from global;
+  }
+}

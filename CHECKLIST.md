@@ -12,7 +12,9 @@
 
 **Линтинг:** ESLint (flat config, генерируется Next.js CLI) + Prettier — `npm run lint` должен быть чистым перед каждым коммитом, наравне с тестами.
 
-**UI-конвенция:** максимально использовать возможности Bootstrap (grid/flex-утилиты, готовые компоненты — Modal, Offcanvas, Dropdown, Badge, Spinner, Table и т.д.) вместо кастомного CSS с нуля; BEM — только там, где Bootstrap не покрывает. Для иконок — пакет `bootstrap-icons` (официальный набор Bootstrap, согласован по стилю); Next.js сам по себе никакого набора иконок не поставляет — в `public/` ничего декоративного нет и добавлять не нужно.
+**UI-конвенция:** ТЗ отдельными пунктами требует и БЭМ, и Bootstrap — оба должны быть явно видны в коде, а не только на корне страницы. Поэтому каждый значимый элемент компонента получает свой BEM-класс через CSS-модуль (`*.module.scss`, `composes: ... from global`, см. `page.module.scss`, `form.module.scss`), даже если этот класс всего лишь оборачивает Bootstrap-утилиты/компоненты (grid/flex-утилиты, Modal, Offcanvas, Dropdown, Badge, Spinner, Table и т.д.) без собственного кастомного CSS — так одновременно демонстрируются оба обязательных пункта ТЗ. Литеральные Bootstrap-классы прямо в JSX без BEM-обёртки — исключение, а не норма. Для иконок — пакет `bootstrap-icons` (официальный набор Bootstrap, согласован по стилю); Next.js сам по себе никакого набора иконок не поставляет — в `public/` ничего декоративного нет и добавлять не нужно.
+
+**REST + Redux:** все обращения фронтенда к `app/api/**` идут через RTK Query (`createApi`/`fetchBaseQuery` из `@reduxjs/toolkit/query/react`, файл `src/store/api.ts`) — единый паттерн для auth/orders/products с loading/error-состояниями и кэшированием из коробки, закрывает разом пункты ТЗ «Redux» и «REST (Fetch)». Обычный `createAsyncThunk`/ручной `fetch` в компонентах не используется.
 
 ## Обязательные технологии и подходы (п.1-9 ТЗ)
 
@@ -57,8 +59,8 @@
 - [x] Redux
 - [x] CSS Architecture (БЭМ)
 - [x] CSS Framework — Bootstrap
-- [ ] REST (Axios/Fetch)
-- [ ] Form (Validation) — форма логина
+- [x] REST (Axios/Fetch) — через RTK Query (fetchBaseQuery)
+- [x] Form (Validation) — форма логина
 - [x] Git
 - [ ] Docker
 - [ ] WebSocket (WS)
@@ -79,7 +81,7 @@
 - [ ] SSR (Next.js)
 - [ ] Unit-тесты (backend + frontend)
 - [ ] i18n (ru/en)
-- [ ] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
+- [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
 - [ ] Web Storage (язык, последний фильтр типа продукта — в localStorage)
 - [ ] Lazy Loading (chart, map — `next/dynamic`)
 - [ ] Charts (recharts)
@@ -95,10 +97,10 @@
 - [x] Prisma: `schema.prisma` (User/Order/Product/Price) + `seed.ts` — реальные данные на основе `docs/assignment/app.js` (исправлены баги, ~25 приходов), поверх MySQL
 - [x] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
 - [x] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
+- [x] Login страница + форма с валидацией (Bootstrap) + редирект неавторизованных — вход через RTK Query (`useLoginMutation`); временно редиректит на `/` (заглушка-скаффолд), пока не построен Layout и страница Orders; `proxy.ts` также редиректит уже залогиненного пользователя с `/login` обратно на `/`
 - [ ] `app/api/products/route.ts` — список + фильтр по типу
 - [ ] `ws-server/` — отдельный небольшой Node/Socket.io-процесс, счётчик активных вкладок
 - [ ] Layout: `Sidebar` (Orders/Products как рабочие роуты; Группы/Пользователи/Настройки — тоже рабочие роуты, см. ниже), `TopMenu` (живые часы + WS-счётчик, без доп. элементов — как на скрине)
-- [ ] Login страница + форма с валидацией + редирект неавторизованных
 - [ ] Orders: список, детали-панель (2 формата дат, сумма в 2 валютах), delete-модалка — на реальном API
 - [ ] Products: список, фильтр по типу, 2 формата дат гарантии, цена в 2 валютах, название прихода — на реальном API
 - [ ] Анимации переходов (роуты / панель деталей / модалка)

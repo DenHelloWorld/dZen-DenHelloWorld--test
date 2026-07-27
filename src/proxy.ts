@@ -8,12 +8,19 @@ const PUBLIC_API_PREFIX = '/api/auth/login';
 export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
-  if (PUBLIC_PAGE_PATHS.includes(pathname) || pathname.startsWith(PUBLIC_API_PREFIX)) {
+  if (pathname.startsWith(PUBLIC_API_PREFIX)) {
     return NextResponse.next();
   }
 
   const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
   const session = token ? await verifySessionToken(token) : null;
+
+  if (PUBLIC_PAGE_PATHS.includes(pathname)) {
+    if (session) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    return NextResponse.next();
+  }
 
   if (session) {
     return NextResponse.next();

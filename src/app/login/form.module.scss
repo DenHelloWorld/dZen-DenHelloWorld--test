@@ -1,0 +1,32 @@
+.form {
+  composes: d-flex flex-column from global;
+
+  &__field {
+    composes: mb-3 from global;
+  }
+
+  &__label {
+    composes: form-label small from global;
+  }
+
+  &__input {
+    composes: form-control from global;
+  }
+
+  &__alert {
+    composes: alert alert-danger p-2 mb-3 text-center text-truncate from global;
+    height: 2.625rem;
+
+    &--hidden {
+      composes: invisible opacity-0 from global;
+    }
+  }
+
+  &__button {
+    composes: btn btn-primary w-100 from global;
+  }
+
+  &__spinner {
+    composes: spinner-border spinner-border-sm me-2 from global;
+  }
+}
