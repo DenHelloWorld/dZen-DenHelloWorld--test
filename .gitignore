@@ -31,5 +31,8 @@ yarn-error.log*
 # Test coverage
 coverage/
 
+# Prisma generated client
+src/generated/
+
 # Vercel (not used for deployment here, but harmless to ignore)
 .vercel
