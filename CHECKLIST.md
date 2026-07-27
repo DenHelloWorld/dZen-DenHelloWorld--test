@@ -98,7 +98,7 @@
 - [x] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
 - [x] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
 - [x] Login страница + форма с валидацией (Bootstrap) + редирект неавторизованных — вход через RTK Query (`useLoginMutation`); временно редиректит на `/` (заглушка-скаффолд), пока не построен Layout и страница Orders; `proxy.ts` также редиректит уже залогиненного пользователя с `/login` обратно на `/`
-- [ ] `app/api/products/route.ts` — список + фильтр по типу
+- [x] `app/api/products/route.ts` — список + фильтр по типу
 - [ ] `ws-server/` — отдельный небольшой Node/Socket.io-процесс, счётчик активных вкладок
 - [ ] Layout: `Sidebar` (Orders/Products как рабочие роуты; Группы/Пользователи/Настройки — тоже рабочие роуты, см. ниже), `TopMenu` (живые часы + WS-счётчик, без доп. элементов — как на скрине)
 - [ ] Orders: список, детали-панель (2 формата дат, сумма в 2 валютах), delete-модалка — на реальном API
