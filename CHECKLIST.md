@@ -67,7 +67,7 @@
 - [ ] Docker — контейнеризация всего приложения и окружения
 - [x] Git-репозиторий с историей веток/коммитов
 - [ ] Read.me с описанием проекта и функций
-- [ ] Файл схемы БД (MySQL Workbench) — `db/schema.sql`
+- [x] Файл схемы БД (MySQL Workbench) — `db/schema.sql`
 - [ ] Хостинг/VDS — **вне зоны ответственности ассистента, выполняется пользователем**
 - [ ] Видео с демонстрацией — **вне зоны ответственности ассистента, выполняется пользователем**
 
@@ -89,7 +89,7 @@
 
 - [x] Scaffold: `git init`, `.gitignore`, `CHECKLIST.md`, перенос эталонных материалов в `docs/assignment/`
 - [x] Frontend: каркас Next.js (App Router, TS) + Redux Toolkit + Bootstrap + BEM-стили + проверенный ESLint/Prettier-конфиг (`npm run lint` чистый)
-- [ ] `db/schema.sql` + `docker-compose.yml` (сервис `mysql`) + `.env.example` — поднять БД как можно раньше, чтобы дальше можно было проверять каждый шаг вживую
+- [x] `db/schema.sql` + `docker-compose.yml` (сервис `mysql`) + `.env.example` — поднять БД как можно раньше, чтобы дальше можно было проверять каждый шаг вживую
 - [ ] Prisma: `schema.prisma` (User/Order/Product/Price) + `seed.ts` — реальные данные на основе `docs/assignment/app.js` (исправлены баги, ~25 приходов), поверх MySQL
 - [ ] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
 - [ ] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
