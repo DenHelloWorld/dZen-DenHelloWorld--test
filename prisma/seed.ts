@@ -1,13 +1,8 @@
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@/generated/prisma/client';
+import { getMysqlPoolConfig } from '@/lib/mysql-config';
 
-const adapter = new PrismaMariaDb({
-  host: process.env.MYSQL_HOST,
-  port: Number(process.env.MYSQL_PORT),
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-});
+const adapter = new PrismaMariaDb(getMysqlPoolConfig());
 const prisma = new PrismaClient({ adapter });
 
 const PRODUCT_TYPES = ['Monitors', 'Keyboards', 'Mice', 'Laptops', 'Printers'];
