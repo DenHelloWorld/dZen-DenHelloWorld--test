@@ -1,7 +1,0 @@
-.home {
-  composes: container py-5 from global;
-
-  &__subtitle {
-    composes: text-muted from global;
-  }
-}

@@ -1,0 +1,11 @@
+.app-layout {
+  composes: d-flex flex-column min-vh-100 from global;
+
+  &__body {
+    composes: d-flex flex-fill from global;
+  }
+
+  &__content {
+    composes: flex-fill p-4 from global;
+  }
+}

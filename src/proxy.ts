@@ -17,7 +17,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   if (PUBLIC_PAGE_PATHS.includes(pathname)) {
     if (session) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/orders', request.url));
     }
     return NextResponse.next();
   }

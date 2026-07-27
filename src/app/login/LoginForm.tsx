@@ -24,7 +24,7 @@ export default function LoginForm(): React.JSX.Element {
     const result = await login({ username, password });
 
     if ('data' in result) {
-      router.push('/');
+      router.push('/orders');
       router.refresh();
     }
   };
