@@ -2,23 +2,34 @@
 .DS_Store
 .idea/
 .vscode/
+*.pem
 
 # Dependencies
 node_modules/
+/.pnp
+.pnp.*
 
 # Build output
 dist/
 .next/
 out/
 build/
+*.tsbuildinfo
+next-env.d.ts
 
 # Env
 .env
 .env.local
+.env*.local
 
 # Logs
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 *.log
 
 # Test coverage
 coverage/
+
+# Vercel (not used for deployment here, but harmless to ignore)
+.vercel

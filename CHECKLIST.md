@@ -14,11 +14,11 @@
 
 ## Обязательные технологии и подходы (п.1-9 ТЗ)
 
-- [ ] Библиотека управления глобальным состоянием — Redux Toolkit
+- [x] Библиотека управления глобальным состоянием — Redux Toolkit
 - [ ] Компонентный подход
 - [ ] Роутинг для навигации — Next.js App Router
 - [ ] Анимационные эффекты при переходах — Framer Motion
-- [ ] ES6 (arrow functions, spread, template strings)
+- [x] ES6 (arrow functions, spread, template strings)
 - [x] Сторонние плагины — используются по необходимости
 - [x] Git с осмысленной историей коммитов (репозиторий инициализирован, коммиты по этапам)
 - [ ] WebSocket — счётчик активных вкладок (Socket.io)
@@ -51,16 +51,16 @@
 
 ## Обязательные инструменты для разработчика (все уровни)
 
-- [ ] React.js (последняя версия) — через Next.js
-- [ ] Redux
-- [ ] CSS Architecture (БЭМ)
-- [ ] CSS Framework — Bootstrap
+- [x] React.js (последняя версия) — через Next.js
+- [x] Redux
+- [x] CSS Architecture (БЭМ)
+- [x] CSS Framework — Bootstrap
 - [ ] REST (Axios/Fetch)
 - [ ] Form (Validation) — форма логина
 - [x] Git
 - [ ] Docker
 - [ ] WebSocket (WS)
-- [ ] ESLint + Prettier (`npm run lint` чистый на каждом коммите)
+- [x] ESLint + Prettier (`npm run lint` чистый на каждом коммите)
 
 ## Формат результата
 
@@ -88,7 +88,7 @@
 Каждый пункт — отдельный коммит. Один пункт → стоп → ждём подтверждения, прежде чем переходить к следующему.
 
 - [x] Scaffold: `git init`, `.gitignore`, `CHECKLIST.md`, перенос эталонных материалов в `docs/assignment/`
-- [ ] Frontend: каркас Next.js (App Router, TS) + Redux Toolkit + Bootstrap + BEM-стили + проверенный ESLint/Prettier-конфиг (`npm run lint` чистый)
+- [x] Frontend: каркас Next.js (App Router, TS) + Redux Toolkit + Bootstrap + BEM-стили + проверенный ESLint/Prettier-конфиг (`npm run lint` чистый)
 - [ ] `db/schema.sql` + `docker-compose.yml` (сервис `mysql`) + `.env.example` — поднять БД как можно раньше, чтобы дальше можно было проверять каждый шаг вживую
 - [ ] Prisma: `schema.prisma` (User/Order/Product/Price) + `seed.ts` — реальные данные на основе `docs/assignment/app.js` (исправлены баги, ~25 приходов), поверх MySQL
 - [ ] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
@@ -111,4 +111,5 @@
 - [ ] Сквозная проверка через `docker compose up --build`
 
 ---
+
 Примечание: пункты, требующие поднятого MySQL, отмечаются как выполненные только после реальной проверки в браузере — см. README.
