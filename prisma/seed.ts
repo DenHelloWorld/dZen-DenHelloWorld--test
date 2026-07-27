@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@/generated/prisma/client';
 import { getMysqlPoolConfig } from '@/lib/mysql-config';
@@ -9,10 +10,22 @@ const PRODUCT_TYPES = ['Monitors', 'Keyboards', 'Mice', 'Laptops', 'Printers'];
 const ORDER_COUNT = 25;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+const DEMO_USERNAME = 'admin';
+const DEMO_PASSWORD = 'admin123';
+
 async function main(): Promise<void> {
   await prisma.prices.deleteMany();
   await prisma.products.deleteMany();
   await prisma.orders.deleteMany();
+
+  await prisma.users.upsert({
+    where: { username: DEMO_USERNAME },
+    update: {},
+    create: {
+      username: DEMO_USERNAME,
+      password_hash: await bcrypt.hash(DEMO_PASSWORD, 10),
+    },
+  });
 
   let productSerial = 1000;
 

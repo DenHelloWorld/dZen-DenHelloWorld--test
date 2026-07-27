@@ -91,7 +91,7 @@
 - [x] Frontend: каркас Next.js (App Router, TS) + Redux Toolkit + Bootstrap + BEM-стили + проверенный ESLint/Prettier-конфиг (`npm run lint` чистый)
 - [x] `db/schema.sql` + `docker-compose.yml` (сервис `mysql`) + `.env.example` — поднять БД как можно раньше, чтобы дальше можно было проверять каждый шаг вживую
 - [x] Prisma: `schema.prisma` (User/Order/Product/Price) + `seed.ts` — реальные данные на основе `docs/assignment/app.js` (исправлены баги, ~25 приходов), поверх MySQL
-- [ ] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
+- [x] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов (ждёт docker compose up)
 - [ ] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
 - [ ] `app/api/products/route.ts` — список + фильтр по типу
 - [ ] `ws-server/` — отдельный небольшой Node/Socket.io-процесс, счётчик активных вкладок
