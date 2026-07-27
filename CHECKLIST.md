@@ -12,6 +12,8 @@
 
 **Линтинг:** ESLint (flat config, генерируется Next.js CLI) + Prettier — `npm run lint` должен быть чистым перед каждым коммитом, наравне с тестами.
 
+**UI-конвенция:** максимально использовать возможности Bootstrap (grid/flex-утилиты, готовые компоненты — Modal, Offcanvas, Dropdown, Badge, Spinner, Table и т.д.) вместо кастомного CSS с нуля; BEM — только там, где Bootstrap не покрывает. Для иконок — пакет `bootstrap-icons` (официальный набор Bootstrap, согласован по стилю); Next.js сам по себе никакого набора иконок не поставляет — в `public/` ничего декоративного нет и добавлять не нужно.
+
 ## Обязательные технологии и подходы (п.1-9 ТЗ)
 
 - [x] Библиотека управления глобальным состоянием — Redux Toolkit
@@ -91,8 +93,8 @@
 - [x] Frontend: каркас Next.js (App Router, TS) + Redux Toolkit + Bootstrap + BEM-стили + проверенный ESLint/Prettier-конфиг (`npm run lint` чистый)
 - [x] `db/schema.sql` + `docker-compose.yml` (сервис `mysql`) + `.env.example` — поднять БД как можно раньше, чтобы дальше можно было проверять каждый шаг вживую
 - [x] Prisma: `schema.prisma` (User/Order/Product/Price) + `seed.ts` — реальные данные на основе `docs/assignment/app.js` (исправлены баги, ~25 приходов), поверх MySQL
-- [x] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов (ждёт docker compose up)
-- [ ] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
+- [x] `app/api/auth/login/route.ts` — проверка demo-пользователя, выдача JWT в httpOnly-cookie + `proxy.ts` guard приватных роутов
+- [x] `app/api/orders/route.ts` + `app/api/orders/[id]/route.ts` — list/detail/delete, суммы по валютам
 - [ ] `app/api/products/route.ts` — список + фильтр по типу
 - [ ] `ws-server/` — отдельный небольшой Node/Socket.io-процесс, счётчик активных вкладок
 - [ ] Layout: `Sidebar` (Orders/Products как рабочие роуты; Группы/Пользователи/Настройки — тоже рабочие роуты, см. ниже), `TopMenu` (живые часы + WS-счётчик, без доп. элементов — как на скрине)
