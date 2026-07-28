@@ -1,0 +1,35 @@
+.layout {
+  composes: d-flex align-items-start flex-fill from global;
+  min-height: 0;
+  gap: 0;
+  transition: gap 0.25s ease;
+
+  &--panel-open {
+    gap: 1rem;
+  }
+}
+
+.panel-wrap {
+  overflow: hidden;
+  width: 0;
+  transition: width 0.25s ease;
+  flex-shrink: 0;
+
+  &--open {
+    width: var(--panel-width);
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .panel-wrap {
+    width: 100%;
+
+    &--open {
+      width: 100%;
+    }
+  }
+}

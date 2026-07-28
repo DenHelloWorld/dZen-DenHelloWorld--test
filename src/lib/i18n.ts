@@ -2,17 +2,18 @@ export type Locale = 'ru' | 'en';
 
 export const translations: Record<Locale, Record<string, string>> = {
   ru: {
-    'nav.orders': 'Заказы',
+    'nav.orders': 'Приходы',
     'nav.products': 'Товары',
     'nav.groups': 'Группы',
+    'nav.warehouses': 'Склады',
     'nav.users': 'Пользователи',
     'nav.settings': 'Настройки',
-    'orders.title': 'Заказы',
+    'orders.title': 'Приходы',
     'orders.products': 'товаров',
     'orders.product': 'товар',
     'orders.panel_total': 'Итого:',
-    'orders.panel_error': 'Ошибка загрузки заказа',
-    'orders.delete_confirm': 'Вы уверены, что хотите удалить этот заказ?',
+    'orders.panel_error': 'Ошибка загрузки прихода',
+    'orders.delete_confirm': 'Вы уверены, что хотите удалить этот приход?',
     'products.title': 'Товары',
     'products.filter_type': 'Тип',
     'products.all_types': 'Все типы',
@@ -23,15 +24,17 @@ export const translations: Record<Locale, Record<string, string>> = {
     'products.specification': 'Спецификация',
     'products.guarantee': 'Гарантия',
     'products.no_warranty': 'Нет данных',
+    'products.no_results': 'Товары не найдены',
     'products.price': 'Цена',
-    'products.panel_order': 'Заказ:',
+    'products.panel_order': 'Приход:',
     'products.delete_confirm': 'Вы уверены, что хотите удалить этот товар?',
     'common.delete': 'Удалить',
     'common.cancel': 'Отмена',
     'common.close': 'Закрыть',
     'common.loading': 'Загрузка...',
     'common.error': 'Ошибка загрузки',
-    'common.order': 'Заказ',
+    'common.order': 'Приход',
+    'common.reset': 'Сбросить',
     'login.title': 'Вход',
     'login.username': 'Имя пользователя',
     'login.password': 'Пароль',
@@ -42,6 +45,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     'settings.language': 'Язык',
     'settings.lang.ru': 'Русский',
     'settings.lang.en': 'English',
+    'settings.storage': 'Сохранённые данные',
+    'settings.reset_storage': 'Сбросить сохранённые вкладки',
+    'settings.reset_storage_title': 'Сброс сохранённых данных',
+    'settings.reset_storage_confirm':
+      'Сбросить последние открытые карточки на Приходах, Товарах, Складах и Группах? Это никак не повлияет на сами данные — только на то, что запомнил браузер.',
     'topmenu.active_tabs': 'Активных вкладок',
     'users.title': 'Пользователи',
     'users.profile': 'Профиль',
@@ -49,13 +57,18 @@ export const translations: Record<Locale, Record<string, string>> = {
     'users.email': 'Email',
     'users.role': 'Роль',
     'groups.title': 'Группы',
-    'groups.map': 'Карта складов',
+    'groups.count': 'Товаров',
+    'groups.avg_price': 'Средняя цена',
+    'groups.view_products': 'Смотреть товары',
+    'warehouses.title': 'Склады',
+    'warehouses.map': 'Карта склада',
     'delete.modal.title': 'Подтверждение удаления',
   },
   en: {
     'nav.orders': 'Orders',
     'nav.products': 'Products',
     'nav.groups': 'Groups',
+    'nav.warehouses': 'Warehouses',
     'nav.users': 'Users',
     'nav.settings': 'Settings',
     'orders.title': 'Orders',
@@ -74,6 +87,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'products.specification': 'Specification',
     'products.guarantee': 'Guarantee',
     'products.no_warranty': 'No warranty data',
+    'products.no_results': 'No products found',
     'products.price': 'Price',
     'products.panel_order': 'Order:',
     'products.delete_confirm': 'Are you sure you want to delete this product?',
@@ -83,6 +97,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'common.loading': 'Loading...',
     'common.error': 'Failed to load',
     'common.order': 'Order',
+    'common.reset': 'Reset',
     'login.title': 'Sign in',
     'login.username': 'Username',
     'login.password': 'Password',
@@ -93,6 +108,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     'settings.language': 'Language',
     'settings.lang.ru': 'Русский',
     'settings.lang.en': 'English',
+    'settings.storage': 'Saved data',
+    'settings.reset_storage': 'Reset saved tabs',
+    'settings.reset_storage_title': 'Reset saved data',
+    'settings.reset_storage_confirm':
+      'Reset the last opened cards on Orders, Products, Warehouses and Groups? This has no effect on the actual data — only on what the browser remembered.',
     'topmenu.active_tabs': 'Active tabs',
     'users.title': 'Users',
     'users.profile': 'Profile',
@@ -100,11 +120,30 @@ export const translations: Record<Locale, Record<string, string>> = {
     'users.email': 'Email',
     'users.role': 'Role',
     'groups.title': 'Groups',
-    'groups.map': 'Warehouse map',
+    'groups.count': 'Products',
+    'groups.avg_price': 'Average price',
+    'groups.view_products': 'View products',
+    'warehouses.title': 'Warehouses',
+    'warehouses.map': 'Warehouse map',
     'delete.modal.title': 'Delete confirmation',
   },
 };
 
 export function t(key: string, locale: Locale): string {
   return translations[locale][key] ?? key;
+}
+
+/**
+ * Switches the URL locale segment (and the cookie proxy.ts reads for
+ * future requests) while preserving the current path and query string —
+ * e.g. a `?type=` filter on Products must survive a language switch.
+ */
+export function switchLocale(
+  router: { push: (href: string) => void },
+  currentLocale: Locale,
+  newLocale: Locale,
+): void {
+  document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
+  const pathname = window.location.pathname.replace(`/${currentLocale}/`, `/${newLocale}/`);
+  router.push(`${pathname}${window.location.search}`);
 }

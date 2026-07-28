@@ -1,8 +1,9 @@
 'use client';
 
 import { useGetOrderQuery } from '@/store/api';
-import { formatDateLong, formatCurrency } from '@/lib/format';
+import { formatDateLong } from '@/lib/format';
 import { t, type Locale } from '@/lib/i18n';
+import CurrencyPrices from '../_components/CurrencyPrices';
 import styles from './Orders.module.scss';
 
 interface OrderDetailPanelProps {
@@ -52,9 +53,7 @@ export default function OrderDetailPanel({
               {t('orders.panel_total', lang)}
             </span>
             <span className={styles['orders__panel-total-values']}>
-              {order.totals.map((total) => (
-                <span key={total.symbol}>{formatCurrency(total.value, total.symbol)}</span>
-              ))}
+              <CurrencyPrices prices={order.totals} />
             </span>
           </p>
 
@@ -68,9 +67,7 @@ export default function OrderDetailPanel({
                   <span className={styles['orders__panel-product-type']}>{product.type}</span>
                 </span>
                 <span className={styles['orders__panel-product-price']}>
-                  {product.prices.map((price) => (
-                    <span key={price.symbol}>{formatCurrency(price.value, price.symbol)}</span>
-                  ))}
+                  <CurrencyPrices prices={product.prices} />
                 </span>
               </li>
             ))}

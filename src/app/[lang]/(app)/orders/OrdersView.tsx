@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import { useDeleteOrderMutation, useGetOrdersQuery, type OrderListItem } from '@/store/api';
-import { formatDateLong, formatDateShort, formatCurrency } from '@/lib/format';
+import { formatDateLong, formatDateShort } from '@/lib/format';
 import { extractApiErrorMessage } from '@/lib/api-error';
 import { useEscapeToClose } from '@/hooks/useEscapeToClose';
+import { useLocalStorageValue } from '@/hooks/useLocalStorageValue';
 import { t, type Locale } from '@/lib/i18n';
+import { SELECTED_ORDER_STORAGE_KEY } from '@/lib/storage-keys';
 import OrderDetailPanel from './OrderDetailPanel';
 import DeleteConfirmModal from '../_components/DeleteConfirmModal';
+import CurrencyPrices from '../_components/CurrencyPrices';
+import SplitPanelLayout from '../_components/SplitPanelLayout';
 import styles from './Orders.module.scss';
 
 interface OrdersViewProps {
@@ -18,7 +22,10 @@ interface OrdersViewProps {
 export default function OrdersView({ initialOrders, lang }: OrdersViewProps): React.JSX.Element {
   const { data: fetchedOrders } = useGetOrdersQuery();
   const orders = fetchedOrders ?? initialOrders;
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useLocalStorageValue<number | null>(
+    SELECTED_ORDER_STORAGE_KEY,
+    null,
+  );
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [deleteOrder, { isLoading: isDeleting, error: deleteError, reset: resetDelete }] =
     useDeleteOrderMutation();
@@ -53,77 +60,75 @@ export default function OrdersView({ initialOrders, lang }: OrdersViewProps): Re
         <span className={styles['orders__title-count']}>/ {orders.length}</span>
       </h1>
 
-      <div className={styles.orders__layout}>
-        <ul className={styles.orders__list}>
-          {orders.map((order) => (
-            <li
-              key={order.id}
-              className={`${styles.orders__row} ${
-                selectedId === order.id ? styles['orders__row--active'] : ''
-              }`}
-              role="button"
-              tabIndex={0}
-              onClick={() => setSelectedId(order.id)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  setSelectedId(order.id);
-                }
-              }}
-            >
-              <span className={styles['orders__row-title']} title={order.title}>
-                {order.title}
-              </span>
-
-              <span className={styles['orders__row-meta']}>
-                <i className="bi bi-box-seam" aria-hidden="true" />
-                {order.productsCount} {t('orders.products', lang)}
-              </span>
-
-              <span className={styles['orders__row-dates']}>
-                <small>{formatDateShort(order.createdAt, lang)}</small>
-                <span>{formatDateLong(order.createdAt, lang)}</span>
-              </span>
-
-              <span className={styles['orders__row-totals']}>
-                {order.totals.map((total) => (
-                  <span key={total.symbol}>{formatCurrency(total.value, total.symbol)}</span>
-                ))}
-              </span>
-
-              <button
-                type="button"
-                className={styles['orders__row-delete']}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  resetDelete();
-                  setPendingDeleteId(order.id);
+      <SplitPanelLayout
+        list={
+          <ul className={styles.orders__list}>
+            {orders.map((order) => (
+              <li
+                key={order.id}
+                className={`${styles.orders__row} ${
+                  selectedId === order.id ? styles['orders__row--active'] : ''
+                }`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelectedId(order.id)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    setSelectedId(order.id);
+                  }
                 }}
-                aria-label={`Delete ${order.title}`}
               >
-                <i className="bi bi-trash" aria-hidden="true" />
-              </button>
-            </li>
-          ))}
-        </ul>
+                <span className={styles['orders__row-title']} title={order.title}>
+                  {order.title}
+                </span>
 
-        <div
-          className={`${styles['orders__panel-wrap']} ${selectedId !== null ? styles['orders__panel-wrap--open'] : ''}`}
-        >
-          {selectedId !== null ? (
+                <span className={styles['orders__row-meta']}>
+                  <i className="bi bi-box-seam" aria-hidden="true" />
+                  {order.productsCount} {t('orders.products', lang)}
+                </span>
+
+                <span className={styles['orders__row-dates']}>
+                  <small>{formatDateShort(order.createdAt, lang)}</small>
+                  <span>{formatDateLong(order.createdAt, lang)}</span>
+                </span>
+
+                <span className={styles['orders__row-totals']}>
+                  <CurrencyPrices prices={order.totals} />
+                </span>
+
+                <button
+                  type="button"
+                  className={styles['orders__row-delete']}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    resetDelete();
+                    setPendingDeleteId(order.id);
+                  }}
+                  aria-label={`Delete ${order.title}`}
+                >
+                  <i className="bi bi-trash" aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        }
+        panel={
+          selectedId !== null ? (
             <OrderDetailPanel
               orderId={selectedId}
               onClose={() => setSelectedId(null)}
               lang={lang}
             />
-          ) : null}
-        </div>
-      </div>
+          ) : null
+        }
+      />
 
       {pendingDeleteOrder ? (
         <DeleteConfirmModal
-          entityLabel="order"
+          lang={lang}
+          confirmMessageKey="orders.delete_confirm"
           title={pendingDeleteOrder.title}
           isDeleting={isDeleting}
           errorMessage={extractApiErrorMessage(deleteError)}

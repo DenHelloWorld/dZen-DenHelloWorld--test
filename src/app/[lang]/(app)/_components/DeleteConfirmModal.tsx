@@ -1,10 +1,12 @@
 'use client';
 
-import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { t, type Locale } from '@/lib/i18n';
+import ConfirmModal from './ConfirmModal';
 import styles from './DeleteConfirmModal.module.scss';
 
 interface DeleteConfirmModalProps {
-  entityLabel: string;
+  lang: Locale;
+  confirmMessageKey: string;
   title: string;
   isDeleting: boolean;
   errorMessage?: string | null;
@@ -13,56 +15,28 @@ interface DeleteConfirmModalProps {
 }
 
 export default function DeleteConfirmModal({
-  entityLabel,
+  lang,
+  confirmMessageKey,
   title,
   isDeleting,
   errorMessage,
   onCancel,
   onConfirm,
 }: DeleteConfirmModalProps): React.JSX.Element {
-  const dialogRef = useFocusTrap<HTMLDivElement>();
-
   return (
-    <>
-      <div className={styles['delete-modal__backdrop']} />
-      <div
-        ref={dialogRef}
-        className={styles['delete-modal__dialog']}
-        role="dialog"
-        aria-modal="true"
-      >
-        <div className={styles['delete-modal__content']}>
-          <div className={styles['delete-modal__body']}>
-            <div className={styles['delete-modal__text']}>
-              <p>Are you sure you want to delete this {entityLabel}?</p>
-              <p className={styles['delete-modal__item-title']}>{title}</p>
-              {errorMessage ? (
-                <div className={styles['delete-modal__error']} role="alert">
-                  {errorMessage}
-                </div>
-              ) : null}
-            </div>
-            <div className={styles['delete-modal__footer']}>
-              <button
-                type="button"
-                className={styles['delete-modal__cancel']}
-                onClick={onCancel}
-                disabled={isDeleting}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={styles['delete-modal__confirm']}
-                onClick={onConfirm}
-                disabled={isDeleting}
-              >
-                <i className="bi bi-trash" aria-hidden="true" /> Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <ConfirmModal
+      title={t('delete.modal.title', lang)}
+      cancelLabel={t('common.cancel', lang)}
+      confirmLabel={t('common.delete', lang)}
+      confirmIcon="bi-trash"
+      confirmVariant="danger"
+      isProcessing={isDeleting}
+      errorMessage={errorMessage}
+      onCancel={onCancel}
+      onConfirm={onConfirm}
+    >
+      <p>{t(confirmMessageKey, lang)}</p>
+      <p className={styles['delete-modal__item-title']}>{title}</p>
+    </ConfirmModal>
   );
 }

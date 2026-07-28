@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { io, type Socket } from 'socket.io-client';
-import { t, type Locale } from '@/lib/i18n';
+import { switchLocale, t, type Locale } from '@/lib/i18n';
 import BrandLogo from './BrandLogo';
 import styles from './TopMenu.module.scss';
 
@@ -53,12 +53,6 @@ export default function TopMenu({ lang }: { lang: Locale }): React.JSX.Element {
     };
   }, []);
 
-  const switchLocale = (newLocale: Locale): void => {
-    document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
-    const pathname = window.location.pathname.replace(`/${lang}/`, `/${newLocale}/`);
-    router.push(pathname);
-  };
-
   return (
     <header className={styles['top-menu']}>
       <div className={styles['top-menu__brand']}>
@@ -75,14 +69,14 @@ export default function TopMenu({ lang }: { lang: Locale }): React.JSX.Element {
           <button
             type="button"
             className={`btn btn-sm ${lang === 'ru' ? 'btn-success' : 'btn-outline-secondary'}`}
-            onClick={() => switchLocale('ru')}
+            onClick={() => switchLocale(router, lang, 'ru')}
           >
             RU
           </button>
           <button
             type="button"
             className={`btn btn-sm ${lang === 'en' ? 'btn-success' : 'btn-outline-secondary'}`}
-            onClick={() => switchLocale('en')}
+            onClick={() => switchLocale(router, lang, 'en')}
           >
             EN
           </button>

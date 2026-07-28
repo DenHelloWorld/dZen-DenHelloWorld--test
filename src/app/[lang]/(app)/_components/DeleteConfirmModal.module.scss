@@ -1,47 +1,5 @@
-@use '../../../../styles/animations' as *;
-
 .delete-modal {
-  &__backdrop {
-    composes: modal-backdrop show from global;
-    opacity: 0;
-    animation: fadeIn 0.15s ease-out forwards;
-  }
-
-  &__dialog {
-    composes: modal d-block from global;
-    opacity: 0;
-    animation: scaleIn 0.2s ease-out forwards;
-  }
-
-  &__content {
-    composes: modal-dialog modal-dialog-centered from global;
-  }
-
-  &__body {
-    composes: modal-content from global;
-  }
-
-  &__text {
-    composes: modal-body from global;
-  }
-
   &__item-title {
     composes: fw-semibold mb-0 from global;
-  }
-
-  &__error {
-    composes: alert alert-danger mb-0 from global;
-  }
-
-  &__footer {
-    composes: modal-footer from global;
-  }
-
-  &__cancel {
-    composes: btn btn-outline-secondary from global;
-  }
-
-  &__confirm {
-    composes: btn btn-danger from global;
   }
 }
