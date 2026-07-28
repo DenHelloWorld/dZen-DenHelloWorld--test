@@ -12,6 +12,8 @@ SPA "Orders & Products" — тестовое задание уровня Junior+
 
 ## Быстрый старт (Docker) — для проверки/QA
 
+**Перед началом: запустите приложение Docker Desktop и дождитесь, пока значок кита в трее перестанет анимироваться (движок должен быть полностью запущен) — иначе `docker compose` не сможет подключиться.**
+
 ```bash
 git clone https://github.com/DenHelloWorld/dZen-DenHelloWorld--test.git
 cd dZen-DenHelloWorld--test
