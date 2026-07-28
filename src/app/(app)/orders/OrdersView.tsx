@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDeleteOrderMutation, useGetOrdersQuery, type OrderListItem } from '@/store/api';
 import { formatDateLong, formatDateShort, formatCurrency } from '@/lib/format';
 import OrderDetailPanel from './OrderDetailPanel';
-import DeleteConfirmModal from './DeleteConfirmModal';
+import DeleteConfirmModal from '../_components/DeleteConfirmModal';
 import styles from './Orders.module.scss';
 
 interface OrdersViewProps {
@@ -123,6 +123,7 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
 
       {pendingDeleteOrder ? (
         <DeleteConfirmModal
+          entityLabel="order"
           title={pendingDeleteOrder.title}
           isDeleting={isDeleting}
           onCancel={() => setPendingDeleteId(null)}

@@ -52,7 +52,11 @@ async function main(): Promise<void> {
             const productTitle =
               orderIndex === 1
                 ? `Gigabyte Technology X58-USB3 Motherboard with Extended Warranty Package ${productOffset + 1}`
-                : `Product ${orderIndex}.${productOffset + 1}`;
+                : orderIndex === 10
+                  ? `Dell UltraSharp Professional Monitor with Adjustable Stand and Extra Cables ${productOffset + 1}`
+                  : orderIndex === 15
+                    ? `Logitech Wireless Keyboard and Mouse Combo Set for Office Use ${productOffset + 1}`
+                    : `Product ${orderIndex}.${productOffset + 1}`;
 
             return {
               serial_number: String(productSerial++),

@@ -73,7 +73,7 @@ export interface ProductListItem {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Order'],
+  tagTypes: ['Order', 'Product'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
@@ -109,6 +109,21 @@ export const api = createApi({
 
     getProducts: builder.query<ProductListItem[], string | undefined>({
       query: (type) => (type ? `/products?type=${encodeURIComponent(type)}` : '/products'),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Product' as const, id })),
+              { type: 'Product' as const, id: 'LIST' },
+            ]
+          : [{ type: 'Product' as const, id: 'LIST' }],
+    }),
+
+    deleteProduct: builder.mutation<{ success: boolean }, number>({
+      query: (id) => ({ url: `/products/${id}`, method: 'DELETE' }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Product', id },
+        { type: 'Product', id: 'LIST' },
+      ],
     }),
   }),
 });
@@ -119,4 +134,5 @@ export const {
   useGetOrderQuery,
   useDeleteOrderMutation,
   useGetProductsQuery,
+  useDeleteProductMutation,
 } = api;

@@ -3,6 +3,7 @@
 import styles from './DeleteConfirmModal.module.scss';
 
 interface DeleteConfirmModalProps {
+  entityLabel: string;
   title: string;
   isDeleting: boolean;
   onCancel: () => void;
@@ -10,6 +11,7 @@ interface DeleteConfirmModalProps {
 }
 
 export default function DeleteConfirmModal({
+  entityLabel,
   title,
   isDeleting,
   onCancel,
@@ -22,8 +24,8 @@ export default function DeleteConfirmModal({
         <div className={styles['delete-modal__content']}>
           <div className={styles['delete-modal__body']}>
             <div className={styles['delete-modal__text']}>
-              <p>Are you sure you want to delete this order?</p>
-              <p className={styles['delete-modal__order-title']}>{title}</p>
+              <p>Are you sure you want to delete this {entityLabel}?</p>
+              <p className={styles['delete-modal__item-title']}>{title}</p>
             </div>
             <div className={styles['delete-modal__footer']}>
               <button

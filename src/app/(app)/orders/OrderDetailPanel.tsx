@@ -45,9 +45,11 @@ export default function OrderDetailPanel({
 
           <p className={styles['orders__panel-total']}>
             <span className={styles['orders__panel-total-label']}>Total:</span>
-            {order.totals.map((total) => (
-              <span key={total.symbol}>{formatCurrency(total.value, total.symbol)}</span>
-            ))}
+            <span className={styles['orders__panel-total-values']}>
+              {order.totals.map((total) => (
+                <span key={total.symbol}>{formatCurrency(total.value, total.symbol)}</span>
+              ))}
+            </span>
           </p>
 
           <ul className={styles['orders__panel-products']}>

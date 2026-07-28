@@ -89,7 +89,11 @@
   }
 
   &__panel-total {
-    composes: d-flex gap-3 fw-semibold mb-3 pb-3 border-bottom from global;
+    composes: d-flex justify-content-between gap-3 fw-semibold mb-3 pb-3 border-bottom from global;
+  }
+
+  &__panel-total-values {
+    composes: d-flex flex-column text-end from global;
   }
 
   &__panel-total-label {
