@@ -33,21 +33,32 @@ async function main(): Promise<void> {
     const productCount = (orderIndex % 4) + 1;
     const createdAt = new Date(Date.now() - orderIndex * 7 * DAY_MS);
 
+    const title =
+      orderIndex === 1
+        ? 'Bulk delivery of office equipment for the new headquarters building renovation'
+        : orderIndex === 2
+          ? 'Replacement hardware shipment for the regional branch office relocation'
+          : `Order ${orderIndex}`;
+
     await prisma.orders.create({
       data: {
-        title: `Order ${orderIndex}`,
+        title,
         description: `Order ${orderIndex} description`,
         created_at: createdAt,
         products: {
           create: Array.from({ length: productCount }, (_, productOffset) => {
             const type = PRODUCT_TYPES[(orderIndex + productOffset) % PRODUCT_TYPES.length];
             const usdValue = 100 + productOffset * 25;
+            const productTitle =
+              orderIndex === 1
+                ? `Gigabyte Technology X58-USB3 Motherboard with Extended Warranty Package ${productOffset + 1}`
+                : `Product ${orderIndex}.${productOffset + 1}`;
 
             return {
               serial_number: String(productSerial++),
               is_new: productOffset % 2 === 0,
               photo: 'pathToFile.jpg',
-              title: `Product ${orderIndex}.${productOffset + 1}`,
+              title: productTitle,
               type,
               specification: `Specification ${orderIndex}.${productOffset + 1}`,
               guarantee_start: createdAt,

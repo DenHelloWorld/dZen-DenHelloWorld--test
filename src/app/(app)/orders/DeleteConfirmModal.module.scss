@@ -1,0 +1,29 @@
+.delete-modal {
+  &__backdrop {
+    composes: modal-backdrop show from global;
+  }
+
+  &__dialog {
+    composes: modal d-block from global;
+  }
+
+  &__content {
+    composes: modal-dialog modal-dialog-centered from global;
+  }
+
+  &__body {
+    composes: modal-content from global;
+  }
+
+  &__text {
+    composes: modal-body from global;
+  }
+
+  &__order-title {
+    composes: fw-semibold mb-0 from global;
+  }
+
+  &__footer {
+    composes: modal-footer from global;
+  }
+}

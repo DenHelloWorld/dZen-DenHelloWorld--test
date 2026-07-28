@@ -1,11 +1,14 @@
 .app-layout {
-  composes: d-flex flex-column min-vh-100 from global;
+  composes: d-flex flex-column vh-100 overflow-hidden from global;
 
   &__body {
     composes: d-flex flex-fill from global;
+    min-height: 0;
   }
 
   &__content {
-    composes: flex-fill p-4 from global;
+    composes: flex-fill p-4 overflow-hidden d-flex flex-column mx-auto w-100 from global;
+    min-height: 0;
+    max-width: 1600px;
   }
 }

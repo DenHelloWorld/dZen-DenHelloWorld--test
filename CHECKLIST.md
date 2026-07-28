@@ -78,7 +78,7 @@
 ## Уровень Junior+
 
 - [ ] TypeScript (backend + frontend)
-- [ ] SSR (Next.js)
+- [x] SSR (Next.js) — Orders страница: Server Component фетчит данные напрямую (Prisma), передаёт как props клиентскому компоненту; `export const dynamic = 'force-dynamic'` не даёт Next.js закэшировать это статически
 - [ ] Unit-тесты (backend + frontend)
 - [ ] i18n (ru/en)
 - [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
@@ -101,7 +101,7 @@
 - [x] `app/api/products/route.ts` — список + фильтр по типу
 - [x] `ws-server/` — отдельный небольшой Node/Socket.io-процесс (свой `package.json`/`tsconfig.json`), счётчик активных вкладок: инкремент/декремент на connect/disconnect, broadcast всем клиентам события `active-tabs`; проверено смоук-тестом с двумя клиентами. Фронтенд ещё не подключён — это пункт TopMenu ниже
 - [x] Layout: route group `(app)` со общим `layout.tsx` (не затрагивает `/login`); `Sidebar` — 5 рабочих роутов (Orders/Groups/Products/Users/Settings) с подсветкой активного; `TopMenu` — живые часы (без гидратационных проблем, тик через `useEffect`) + WS-счётчик через `socket.io-client` (`NEXT_PUBLIC_WS_URL`), без строки поиска со скрина (её нет в тексте ТЗ, п.4). `/` теперь редиректит на `/orders`, страницы `/orders`/`/products`/`/groups`/`/users`/`/settings` — пока заглушки, содержимое появится в следующих пунктах плана
-- [ ] Orders: список, детали-панель (2 формата дат, сумма в 2 валютах), delete-модалка — на реальном API
+- [x] Orders: список (2 формата дат, сумма в 2 валютах, truncate+tooltip на длинных названиях), детали-панель сбоку без сабраута (title/сумма прихода/список продуктов, полные названия без обрезки), delete-модалка — на реальном API через RTK Query; SSR (Server Component фетчит `fetchOrdersList()` напрямую через Prisma, отдаёт как props — реальные данные в первом HTML, без спиннера); Escape закрывает модалку/панель (модалка в приоритете)
 - [ ] Products: список, фильтр по типу, 2 формата дат гарантии, цена в 2 валютах, название прихода — на реальном API
 - [ ] Анимации переходов (роуты / панель деталей / модалка)
 - [ ] `/settings` — i18n: переключатель языка (ru/en), выбор сохраняется в localStorage (Web Storage)
