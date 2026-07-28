@@ -1,4 +1,13 @@
-import { t, type Locale } from '@/lib/i18n';
+import type { Metadata } from 'next';
+import { fetchProductGroups } from '@/lib/groups-data';
+import GroupsView from './GroupsView';
+import type { Locale } from '@/lib/i18n';
+
+export const metadata: Metadata = {
+  title: 'Groups — Orders & Products',
+};
+
+export const dynamic = 'force-dynamic';
 
 export default async function GroupsPage({
   params,
@@ -6,10 +15,7 @@ export default async function GroupsPage({
   params: Promise<{ lang: string }>;
 }): Promise<React.JSX.Element> {
   const { lang } = await params;
-  return (
-    <h1 className="h4">
-      <i className="bi bi-diagram-3 me-2" aria-hidden="true" />
-      {t('groups.title', lang as Locale)}
-    </h1>
-  );
+  const groups = await fetchProductGroups();
+
+  return <GroupsView groups={groups} lang={lang as Locale} />;
 }

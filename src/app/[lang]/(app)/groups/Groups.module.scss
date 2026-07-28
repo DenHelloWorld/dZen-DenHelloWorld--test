@@ -1,0 +1,117 @@
+@use '../../../../styles/animations' as *;
+
+.groups {
+  composes: d-flex flex-column h-100 from global;
+  min-height: 0;
+
+  &__title {
+    composes: h4 mb-4 d-flex align-items-baseline gap-2 from global;
+  }
+
+  &__title-count {
+    composes: text-secondary fw-normal from global;
+  }
+
+  &__list {
+    composes: list-unstyled h-100 overflow-y-auto from global;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  &__row {
+    composes: card flex-row align-items-center gap-3 p-3 mb-2 shadow-sm from global;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(139, 195, 74, 0.12);
+    }
+
+    &--active {
+      composes: border-1 from global;
+      border-color: var(--color-accent);
+    }
+  }
+
+  &__row-name {
+    composes: fw-semibold flex-fill from global;
+    color: var(--color-text);
+  }
+
+  &__row-count {
+    composes: d-flex align-items-center gap-2 text-secondary small from global;
+    flex-shrink: 0;
+    width: 90px;
+  }
+
+  &__row-price {
+    composes: d-flex flex-column text-end fw-semibold from global;
+    flex-shrink: 0;
+    width: 110px;
+  }
+
+  &__panel-wrap {
+    overflow: hidden;
+    width: 0;
+    transition: width 0.25s ease;
+    flex-shrink: 0;
+
+    &--open {
+      width: var(--panel-width);
+    }
+  }
+
+  &__panel {
+    composes: card p-4 shadow-sm from global;
+    width: var(--panel-width);
+    min-width: 0;
+    animation: fadeSlideIn 0.2s ease-out;
+  }
+
+  &__panel-close {
+    composes: btn btn-sm btn-outline-secondary position-absolute from global;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &__panel-title {
+    composes: h5 mb-3 pe-5 from global;
+  }
+
+  &__panel-details {
+    composes: mb-4 from global;
+  }
+
+  &__panel-detail {
+    composes: d-flex justify-content-between gap-3 border-bottom py-2 from global;
+  }
+
+  &__panel-detail-label {
+    composes: text-secondary small from global;
+  }
+
+  &__panel-detail-value {
+    composes: mb-0 text-end fw-semibold from global;
+  }
+
+  &__panel-link {
+    composes: btn btn-outline-primary btn-sm from global;
+  }
+
+  @media (max-width: 768px) {
+    &__layout {
+      flex-direction: column;
+    }
+
+    &__panel-wrap {
+      width: 100%;
+
+      &--open {
+        width: 100%;
+      }
+    }
+
+    &__panel {
+      width: 100%;
+    }
+  }
+}

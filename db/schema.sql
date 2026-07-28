@@ -45,3 +45,13 @@ CREATE TABLE prices (
   CONSTRAINT fk_prices_product FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
   KEY idx_prices_product (product_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE warehouses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name_ru VARCHAR(255) NOT NULL,
+  name_en VARCHAR(255) NOT NULL,
+  address_ru VARCHAR(255) NOT NULL,
+  address_en VARCHAR(255) NOT NULL,
+  lat DOUBLE NOT NULL,
+  lng DOUBLE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

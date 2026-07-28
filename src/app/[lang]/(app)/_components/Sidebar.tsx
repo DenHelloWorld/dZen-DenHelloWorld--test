@@ -14,6 +14,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: '/orders', labelKey: 'nav.orders', icon: 'bi-receipt' },
   { href: '/groups', labelKey: 'nav.groups', icon: 'bi-diagram-3' },
+  { href: '/warehouses', labelKey: 'nav.warehouses', icon: 'bi-geo-alt' },
   { href: '/products', labelKey: 'nav.products', icon: 'bi-box-seam' },
   { href: '/users', labelKey: 'nav.users', icon: 'bi-people' },
   { href: '/settings', labelKey: 'nav.settings', icon: 'bi-gear' },

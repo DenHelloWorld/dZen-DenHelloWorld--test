@@ -51,3 +51,13 @@ model users {
   password_hash String   @db.VarChar(255)
   created_at    DateTime @default(now()) @db.Timestamp(0)
 }
+
+model warehouses {
+  id         Int    @id @default(autoincrement())
+  name_ru    String @db.VarChar(255)
+  name_en    String @db.VarChar(255)
+  address_ru String @db.VarChar(255)
+  address_en String @db.VarChar(255)
+  lat        Float
+  lng        Float
+}

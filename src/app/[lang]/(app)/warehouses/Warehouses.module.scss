@@ -1,0 +1,79 @@
+@use '../../../../styles/animations' as *;
+
+.warehouses {
+  composes: d-flex flex-column h-100 from global;
+  min-height: 0;
+
+  &__title {
+    composes: h4 mb-4 d-flex align-items-baseline gap-2 from global;
+  }
+
+  &__title-count {
+    composes: text-secondary fw-normal from global;
+  }
+
+  &__list {
+    composes: list-unstyled h-100 overflow-y-auto from global;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  &__row {
+    composes: card flex-row align-items-center justify-content-between gap-3 p-3 mb-2 shadow-sm from global;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(139, 195, 74, 0.12);
+    }
+
+    &--active {
+      composes: border-1 from global;
+      border-color: var(--color-accent);
+    }
+  }
+
+  &__row-name {
+    composes: fw-semibold from global;
+    color: var(--color-text);
+  }
+
+  &__row-address {
+    composes: d-flex align-items-center gap-2 text-secondary small from global;
+  }
+
+  &__panel {
+    composes: card p-4 shadow-sm from global;
+    width: var(--panel-width);
+    min-width: 0;
+    animation: fadeSlideIn 0.2s ease-out;
+  }
+
+  &__panel-close {
+    composes: btn btn-sm btn-outline-secondary position-absolute from global;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &__panel-title {
+    composes: h5 mb-2 pe-5 from global;
+  }
+
+  &__panel-address {
+    composes: text-secondary small mb-3 from global;
+  }
+
+  &__panel-map-label {
+    composes: text-secondary small fw-semibold mb-2 from global;
+  }
+
+  &__panel-map {
+    composes: rounded overflow-hidden border from global;
+    height: 280px;
+  }
+
+  @media (max-width: 768px) {
+    &__panel {
+      width: 100%;
+    }
+  }
+}

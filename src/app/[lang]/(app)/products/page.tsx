@@ -11,12 +11,15 @@ export const dynamic = 'force-dynamic';
 
 export default async function ProductsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{ type?: string }>;
 }): Promise<React.JSX.Element> {
   const { lang } = await params;
+  const { type } = await searchParams;
   const locale = lang as Locale;
   const initialProducts = await fetchProductsList();
 
-  return <ProductsView initialProducts={initialProducts} lang={locale} />;
+  return <ProductsView initialProducts={initialProducts} lang={locale} initialType={type ?? ''} />;
 }
