@@ -79,7 +79,7 @@
 
 - [x] TypeScript (backend + frontend) — весь код (`src/`, `ws-server/`, `prisma/seed.ts`) на `.ts`/`.tsx`, ни одного `.js`
 - [x] SSR (Next.js) — Orders страница: Server Component фетчит данные напрямую (Prisma), передаёт как props клиентскому компоненту; `export const dynamic = 'force-dynamic'` не даёт Next.js закэшировать это статически
-- [ ] Unit-тесты (backend + frontend)
+- [ ] Unit-тесты (backend + frontend) — цель: 80%+ покрытие (statements/branches/functions/lines), порог зашит в `jest.config.ts` (`coverageThreshold`) и падает сборкой тестов, если просядет; `npm run test:coverage` — отчёт
 - [x] i18n (ru/en) — URL-based (`app/[lang]/`), Accept-Language detection, SSR-ready
 - [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
 - [x] Web Storage — последняя открытая карточка/склад/категория запоминается в `localStorage` (`useLocalStorageValue`, общий JSON-хук, синхронизация между вкладками) на Orders/Products/Warehouses/Groups; язык хранится в cookie, см. i18n выше
@@ -112,8 +112,8 @@
 - [x] Общие компоненты вынесены из повторов: `CurrencyPrices` (мультивалютный вывод, было 7 копий), `SplitPanelLayout` (список+панель с условным gap — попутно исправлен баг с "зависшим" отступом при закрытой панели), `ConfirmModal` (общий шелл, `DeleteConfirmModal` теперь его обёртка) — заодно найдено и исправлено: `DeleteConfirmModal` не был локализован (хардкод английского текста при живых неиспользуемых переводах)
 - [x] Терминология приведена к тексту ТЗ: "Заказ" → "Приход" везде в русской локали (ТЗ везде использует "приход", не "заказ клиента")
 - [x] Charts (lazy, `next/dynamic`) на странице Products — bar-чарт по типам товаров (`ProductsChart.tsx`, recharts), переключатель метрики "Количество" / "Средняя цена", свой цвет на тип (`Cell`), скрыт за toggle-кнопкой в шапке, lazy через `next/dynamic({ ssr: false })` со спиннером-фолбэком; данные — агрегация `initialProducts` на клиенте (`chart-data.ts`), без доп. запроса
-- [ ] Unit-тесты frontend (Jest + RTL) — форматтеры, редьюсеры, компоненты
-- [ ] Unit-тесты backend (Jest — обработчики роутов на моках Prisma)
+- [x] Unit-тесты frontend (Jest + RTL, `next/jest`) — форматтеры/i18n (`lib/`), хуки (`useLocalStorageValue`/`useEscapeToClose`/`useFocusTrap`), RTK Query `api`-слайс, общие компоненты (`ConfirmModal`/`DeleteConfirmModal`/`CurrencyPrices`/`SplitPanelLayout`/`Sidebar`/`TopMenu`/...), все `*View`/`*Panel`/`*Chart` компоненты и все `page.tsx` (Server Components — паттерн `render(await Page())`), с моками там, где нужно (RTK Query хуки, `next/navigation`, `socket.io-client`, `react-leaflet`, SCSS-модули) — 41 test suite, 177 тестов, покрытие 97.7/86.0/82.1/97.7% stmts/branch/func/lines, порог в `jest.config.ts` 95/85/80/95% (с запасом над требуемыми 80%+); `npm test` / `npm run test:coverage`
+- [ ] Unit-тесты backend (Jest — обработчики роутов на моках Prisma, без обращения к реальной БД)
 - [ ] `Dockerfile` для Next.js-приложения (dev/prod стадии) + `Dockerfile` для `ws-server/`, обновить `docker-compose.yml` (mysql + web + ws)
 - [ ] `README.md`
 - [ ] Сквозная проверка через `docker compose up --build`

@@ -2,7 +2,7 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type { SerializedError } from '@reduxjs/toolkit';
 
 export function extractApiErrorMessage(
-  error: FetchBaseQueryError | SerializedError | undefined,
+  error: FetchBaseQueryError | SerializedError | null | undefined,
 ): string | null {
   if (!error) {
     return null;
