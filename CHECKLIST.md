@@ -2,7 +2,7 @@
 
 Оригинальный ТЗ: [`docs/assignment/JavaScript _ ReactJS.pdf`](docs/assignment/JavaScript%20_%20ReactJS.pdf). Референсные скрины макета: [`docs/assignment/img/`](docs/assignment/img/). Референс полей/связей Orders↔Products: [`docs/assignment/app.js`](docs/assignment/app.js).
 
-Статус обновляется по ходу разработки. `[x]` — сделано, `[ ]` — не начато. Пункты, помеченные текстом "(ждёт docker compose up)", технически реализованы в коде, но не проверены end-to-end без поднятой БД.
+Статус обновляется по ходу разработки. `[x]` — сделано, `[ ]` — не начато.
 
 **Порядок работы:** без деления на фазы "мок → бэкенд" — сразу реальный backend, без mock-данных. Список ниже выполняется по порядку сверху вниз, один пункт = один коммит.
 
@@ -62,13 +62,13 @@
 - [x] REST (Axios/Fetch) — через RTK Query (fetchBaseQuery)
 - [x] Form (Validation) — форма логина
 - [x] Git
-- [x] Docker (ждёт docker compose up)
+- [x] Docker
 - [x] WebSocket (WS)
 - [x] ESLint + Prettier (`npm run lint` чистый на каждом коммите)
 
 ## Формат результата
 
-- [x] Docker — контейнеризация всего приложения и окружения (ждёт docker compose up)
+- [x] Docker — контейнеризация всего приложения и окружения
 - [x] Git-репозиторий с историей веток/коммитов
 - [x] Read.me с описанием проекта и функций
 - [x] Файл схемы БД (MySQL Workbench) — `db/schema.sql`
@@ -115,9 +115,9 @@
 - [x] Unit-тесты frontend (Jest + RTL, `next/jest`) — форматтеры/i18n (`lib/`), хуки (`useLocalStorageValue`/`useEscapeToClose`/`useFocusTrap`), RTK Query `api`-слайс, общие компоненты (`ConfirmModal`/`DeleteConfirmModal`/`CurrencyPrices`/`SplitPanelLayout`/`Sidebar`/`TopMenu`/...), все `*View`/`*Panel`/`*Chart` компоненты и все `page.tsx` (Server Components — паттерн `render(await Page())`), с моками там, где нужно (RTK Query хуки, `next/navigation`, `socket.io-client`, `react-leaflet`, SCSS-модули)
 - [x] Unit-тесты backend (Jest, `@jest-environment node`) — все 5 route-хендлеров (`app/api/auth/login`, `app/api/orders`, `app/api/orders/[id]`, `app/api/products`, `app/api/products/[id]`), `@/lib/prisma` замокан целиком (`jest.mock`), без единого обращения к реальной БД; статусы/JSON-формы/ветки ошибок (400/401/404/200, Prisma `PrismaClientKnownRequestError` P2025 → 404, неизвестные ошибки — rethrow); заодно вынесены `tsconfig.build.json` (прод-сборка не завязана на типы тестовых файлов) и `next.config.ts` → `typescript.tsconfigPath`
 - [x] Итог по обоим: 46 test suites, 200 тестов, покрытие 97.9/87.5/83.3/97.9% stmts/branch/func/lines (порог в `jest.config.ts` — 95/85/80/95%, с запасом над требуемыми 80%+); `npm test` / `npm run test:coverage`
-- [x] `Dockerfile` для Next.js-приложения (стадии `deps`/`dev`/`builder`/`runner`, прод — `output: 'standalone'`) + `Dockerfile` для `ws-server/` (`dev`/`builder`/`runner`) + `.dockerignore` (root и `ws-server/`); `docker-compose.yml`: добавлены `web` (собирается из `target: runner`, `depends_on: mysql` через healthcheck, `MYSQL_HOST=mysql`, `NEXT_PUBLIC_WS_URL` передан и как build arg — инлайнится в клиентский бандл) и `ws` (`target: runner`, `WS_PORT`/`WS_CORS_ORIGIN`); `.env.example` дополнен `WS_PORT`/`WS_CORS_ORIGIN`; `npm run build` (standalone-выход) и YAML-структура `docker-compose.yml` проверены локально — самого `docker compose up --build` без установленного Docker в этой среде не было (см. ниже)
+- [x] `Dockerfile` для Next.js-приложения (стадии `deps`/`dev`/`builder`/`runner`, прод — `output: 'standalone'`) + `Dockerfile` для `ws-server/` (`dev`/`builder`/`runner`) + `.dockerignore` (root и `ws-server/`); `docker-compose.yml`: `mysql`, `seed` (одноразовый сервис на `target: dev`, засеивает БД и завершается — `web` ждёт его через `service_completed_successfully`), `web` (`target: runner`, `depends_on: mysql` через healthcheck, `MYSQL_HOST=mysql`, `NEXT_PUBLIC_WS_URL` передан и как build arg — инлайнится в клиентский бандл) и `ws` (`target: runner`, `WS_PORT`/`WS_CORS_ORIGIN`); `.env.example` дополнен `WS_PORT`/`WS_CORS_ORIGIN`
 - [x] `README.md` — стек, функции, быстрый старт (Docker и без), переменные окружения, скрипты, тесты, структура проекта, демо-логin (`admin`/`admin123`)
-- [ ] Сквозная проверка через `docker compose up --build` (ждёт запуска пользователем — Docker недоступен в среде ассистента)
+- [x] Сквозная проверка через `docker compose up --build` — прогнано с нуля на свежем клоне (включая холодный рестарт MySQL), по пути исправлены: отсутствие `DATABASE_URL`/`MYSQL_*` в build args (валило `prisma generate` и сбор page data при `next build`), недостижимый `npm run seed` из `runner`-образа (нет `tsx`/`prisma/` — заменено на сервис `seed`), `ER_CANNOT_RETRIEVE_RSA_KEY`/pool timeout на холодном auth-кэше `caching_sha2_password` MySQL 8 (`allowPublicKeyRetrieval: true` в `mysql-config.ts`), незакоммиченная пустая `public/` (git не хранит пустые директории — добавлен `.gitkeep`). Проверено логином `admin`/`admin123` в браузере.
 
 ---
 
