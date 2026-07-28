@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+build
+coverage
+.git
+.env
+.env.local
+.env*.local
+*.md
+docs
+db
+ws-server
+Dockerfile
+docker-compose.yml
+.dockerignore
