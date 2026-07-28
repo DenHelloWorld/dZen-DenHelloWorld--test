@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useDeleteProductMutation, useGetProductsQuery, type ProductListItem } from '@/store/api';
 import { formatDateLong, formatDateShort } from '@/lib/format';
@@ -13,7 +14,17 @@ import DeleteConfirmModal from '../_components/DeleteConfirmModal';
 import CurrencyPrices from '../_components/CurrencyPrices';
 import SplitPanelLayout from '../_components/SplitPanelLayout';
 import ProductDetailPanel from './ProductDetailPanel';
+import { buildProductTypeStats } from './chart-data';
 import styles from './Products.module.scss';
+
+const ProductsChart = dynamic(() => import('./ProductsChart'), {
+  ssr: false,
+  loading: () => (
+    <div className="spinner-border" role="status">
+      <span className="visually-hidden" />
+    </div>
+  ),
+});
 
 interface ProductsViewProps {
   initialProducts: ProductListItem[];
@@ -66,6 +77,9 @@ export default function ProductsView({
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [deleteProduct, { isLoading: isDeleting, error: deleteError, reset: resetDelete }] =
     useDeleteProductMutation();
+  const [isChartOpen, setIsChartOpen] = useState(false);
+  const [chartMetric, setChartMetric] = useState<'count' | 'price'>('count');
+  const chartData = useMemo(() => buildProductTypeStats(initialProducts), [initialProducts]);
 
   /**
    * While unfiltered, derive the option list from the freshest fetch so a
@@ -150,8 +164,46 @@ export default function ProductsView({
               </option>
             ))}
           </select>
+
+          <button
+            type="button"
+            className={`${styles['products__chart-toggle']} ${
+              isChartOpen ? styles['products__chart-toggle--active'] : ''
+            }`}
+            aria-expanded={isChartOpen}
+            onClick={() => setIsChartOpen((open) => !open)}
+          >
+            <i className="bi bi-bar-chart-line me-1" aria-hidden="true" />
+            {t('products.chart.toggle', lang)}
+          </button>
         </div>
       </div>
+
+      {isChartOpen ? (
+        <div className={styles['products__chart-card']}>
+          <div className={styles['products__chart-metrics']} role="group">
+            <button
+              type="button"
+              className={`${styles['products__chart-metric']} ${
+                chartMetric === 'count' ? styles['products__chart-metric--active'] : ''
+              }`}
+              onClick={() => setChartMetric('count')}
+            >
+              {t('products.chart.metric_count', lang)}
+            </button>
+            <button
+              type="button"
+              className={`${styles['products__chart-metric']} ${
+                chartMetric === 'price' ? styles['products__chart-metric--active'] : ''
+              }`}
+              onClick={() => setChartMetric('price')}
+            >
+              {t('products.chart.metric_price', lang)}
+            </button>
+          </div>
+          <ProductsChart data={chartData} metric={chartMetric} lang={lang} />
+        </div>
+      ) : null}
 
       {products.length === 0 ? (
         <p className={styles['products__empty']}>{t('products.no_results', lang)}</p>

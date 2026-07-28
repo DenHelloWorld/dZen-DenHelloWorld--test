@@ -84,7 +84,7 @@
 - [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
 - [x] Web Storage — последняя открытая карточка/склад/категория запоминается в `localStorage` (`useLocalStorageValue`, общий JSON-хук, синхронизация между вкладками) на Orders/Products/Warehouses/Groups; язык хранится в cookie, см. i18n выше
 - [x] Lazy Loading (map — `next/dynamic` с `ssr:false` на `/warehouses`)
-- [ ] Charts (recharts)
+- [x] Charts (recharts)
 - [x] Maps (react-leaflet, страница "Склады" (`/warehouses`) — демо-локации складов)
 
 ## План работ (микрозадачи → коммиты)
@@ -111,7 +111,7 @@
 - [x] Web Storage применён единообразно везде: последний открытый заказ/товар/склад/категория — через общий `useLocalStorageValue` (JSON-хук на `useSyncExternalStore`, синхронизация между вкладками, safe fallback при битых данных); `/settings` — кнопка сброса всех четырёх ключей с confirm-модалкой
 - [x] Общие компоненты вынесены из повторов: `CurrencyPrices` (мультивалютный вывод, было 7 копий), `SplitPanelLayout` (список+панель с условным gap — попутно исправлен баг с "зависшим" отступом при закрытой панели), `ConfirmModal` (общий шелл, `DeleteConfirmModal` теперь его обёртка) — заодно найдено и исправлено: `DeleteConfirmModal` не был локализован (хардкод английского текста при живых неиспользуемых переводах)
 - [x] Терминология приведена к тексту ТЗ: "Заказ" → "Приход" везде в русской локали (ТЗ везде использует "приход", не "заказ клиента")
-- [ ] Charts (lazy, `next/dynamic`) на странице Products
+- [x] Charts (lazy, `next/dynamic`) на странице Products — bar-чарт по типам товаров (`ProductsChart.tsx`, recharts), переключатель метрики "Количество" / "Средняя цена", свой цвет на тип (`Cell`), скрыт за toggle-кнопкой в шапке, lazy через `next/dynamic({ ssr: false })` со спиннером-фолбэком; данные — агрегация `initialProducts` на клиенте (`chart-data.ts`), без доп. запроса
 - [ ] Unit-тесты frontend (Jest + RTL) — форматтеры, редьюсеры, компоненты
 - [ ] Unit-тесты backend (Jest — обработчики роутов на моках Prisma)
 - [ ] `Dockerfile` для Next.js-приложения (dev/prod стадии) + `Dockerfile` для `ws-server/`, обновить `docker-compose.yml` (mysql + web + ws)

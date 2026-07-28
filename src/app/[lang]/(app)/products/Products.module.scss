@@ -29,6 +29,35 @@
     width: 200px;
   }
 
+  &__chart-toggle {
+    composes: btn btn-outline-secondary btn-sm from global;
+
+    &--active {
+      composes: active from global;
+    }
+  }
+
+  &__chart-card {
+    composes: card p-3 mb-4 shadow-sm from global;
+    animation: fadeSlideIn 0.2s ease-out;
+  }
+
+  &__chart-metrics {
+    composes: btn-group btn-group-sm mb-3 from global;
+  }
+
+  &__chart-metric {
+    composes: btn btn-outline-secondary from global;
+
+    &--active {
+      composes: active from global;
+    }
+  }
+
+  &__chart-container {
+    height: 280px;
+  }
+
   &__empty {
     composes: text-secondary text-center py-5 from global;
   }
