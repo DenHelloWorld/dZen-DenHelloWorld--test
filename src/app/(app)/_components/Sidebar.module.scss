@@ -31,9 +31,11 @@
     font-size: 0.85rem;
     letter-spacing: 0.03em;
     border-left: 3px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 
     &:hover {
       color: var(--color-text);
+      background-color: rgba(139, 195, 74, 0.12);
     }
 
     &--active {

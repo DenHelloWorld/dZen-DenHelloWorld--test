@@ -16,7 +16,7 @@ export default function OrderDetailPanel({
   const { data: order, isLoading, error } = useGetOrderQuery(orderId);
 
   return (
-    <div className={styles.orders__panel}>
+    <div key={orderId} className={styles.orders__panel}>
       <button
         type="button"
         className={styles['orders__panel-close']}

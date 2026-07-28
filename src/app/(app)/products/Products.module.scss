@@ -1,3 +1,5 @@
+@use '../../../styles/animations' as *;
+
 .products {
   composes: d-flex flex-column h-100 from global;
   min-height: 0;
@@ -30,17 +32,13 @@
   &__layout {
     composes: d-flex gap-3 align-items-start flex-fill from global;
     min-height: 0;
+    animation: fadeSlideIn 0.2s ease-out;
   }
 
   &__list {
     composes: list-unstyled h-100 overflow-y-auto from global;
     flex: 1 1 auto;
     min-height: 0;
-
-    &--split {
-      flex: 0 0 620px;
-      width: 620px;
-    }
   }
 
   &__row {
@@ -96,9 +94,40 @@
     flex-shrink: 0;
   }
 
+  &__panel-wrap {
+    overflow: hidden;
+    width: 0;
+    transition: width 0.25s ease;
+    flex-shrink: 0;
+
+    &--open {
+      width: var(--panel-width);
+    }
+  }
+
   &__panel {
-    composes: card p-4 shadow-sm position-relative flex-fill from global;
+    composes: card p-4 shadow-sm from global;
+    width: var(--panel-width);
     min-width: 0;
+    animation: fadeSlideIn 0.2s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    &__layout {
+      flex-direction: column;
+    }
+
+    &__panel-wrap {
+      width: 100%;
+
+      &--open {
+        width: 100%;
+      }
+    }
+
+    &__panel {
+      width: 100%;
+    }
   }
 
   &__panel-close {

@@ -14,7 +14,7 @@ export default function ProductDetailPanel({
   onClose,
 }: ProductDetailPanelProps): React.JSX.Element {
   return (
-    <div className={styles['products__panel']}>
+    <div key={product.id} className={styles['products__panel']}>
       <button
         type="button"
         className={styles['products__panel-close']}

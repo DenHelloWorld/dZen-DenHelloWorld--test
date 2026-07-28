@@ -51,11 +51,7 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
       </h1>
 
       <div className={styles.orders__layout}>
-        <ul
-          className={`${styles.orders__list} ${
-            selectedId !== null ? styles['orders__list--split'] : ''
-          }`}
-        >
+        <ul className={styles.orders__list}>
           {orders.map((order) => (
             <li
               key={order.id}
@@ -109,9 +105,13 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
           ))}
         </ul>
 
-        {selectedId !== null ? (
-          <OrderDetailPanel orderId={selectedId} onClose={() => setSelectedId(null)} />
-        ) : null}
+        <div
+          className={`${styles['orders__panel-wrap']} ${selectedId !== null ? styles['orders__panel-wrap--open'] : ''}`}
+        >
+          {selectedId !== null ? (
+            <OrderDetailPanel orderId={selectedId} onClose={() => setSelectedId(null)} />
+          ) : null}
+        </div>
       </div>
 
       {pendingDeleteOrder ? (

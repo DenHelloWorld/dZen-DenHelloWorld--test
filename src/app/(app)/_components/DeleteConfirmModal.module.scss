@@ -1,10 +1,16 @@
+@use '../../../styles/animations' as *;
+
 .delete-modal {
   &__backdrop {
     composes: modal-backdrop show from global;
+    opacity: 0;
+    animation: fadeIn 0.15s ease-out forwards;
   }
 
   &__dialog {
     composes: modal d-block from global;
+    opacity: 0;
+    animation: scaleIn 0.2s ease-out forwards;
   }
 
   &__content {

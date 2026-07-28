@@ -105,12 +105,8 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
       </div>
 
       {products ? (
-        <div className={styles.products__layout}>
-          <ul
-            className={`${styles.products__list} ${
-              selectedId !== null ? styles['products__list--split'] : ''
-            }`}
-          >
+        <div className={styles.products__layout} key={selectedType || 'all'}>
+          <ul className={styles.products__list}>
             {products.map((product) => (
               <li
                 key={product.id}
@@ -172,9 +168,13 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
             ))}
           </ul>
 
-          {selectedProduct ? (
-            <ProductDetailPanel product={selectedProduct} onClose={() => setSelectedId(null)} />
-          ) : null}
+          <div
+            className={`${styles['products__panel-wrap']} ${selectedId !== null ? styles['products__panel-wrap--open'] : ''}`}
+          >
+            {selectedProduct ? (
+              <ProductDetailPanel product={selectedProduct} onClose={() => setSelectedId(null)} />
+            ) : null}
+          </div>
         </div>
       ) : (
         <div className="spinner-border" role="status">
