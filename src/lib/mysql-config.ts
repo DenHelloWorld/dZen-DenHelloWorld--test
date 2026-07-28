@@ -20,5 +20,8 @@ export function getMysqlPoolConfig(): PoolConfig {
     // right after a restart. Without this the driver refuses the exchange
     // and the failure surfaces only as an opaque pool timeout.
     allowPublicKeyRetrieval: true,
+    // Hosted MySQL providers (e.g. Aiven) require TLS; rejectUnauthorized is
+    // left off so we don't have to ship their CA cert into the image.
+    ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
   };
 }
