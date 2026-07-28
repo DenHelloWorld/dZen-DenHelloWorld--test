@@ -48,6 +48,29 @@ docker compose up --build
 - WebSocket-сервер: http://localhost:4001
 - MySQL: localhost:3306 (данные — в volume `mysql_data`, схема накатывается автоматически из `db/schema.sql`)
 
+### Если `docker compose up --build` не запускается
+
+Убедитесь, что команда `docker` в терминале реально обращается к Docker Desktop, а не к другому движку (например, Podman, если он тоже установлен):
+
+```bash
+docker version
+```
+
+В блоке `Server:` должно быть `Docker Desktop`, а не `Podman Engine`. Если не так:
+
+```bash
+docker context ls          # проверить текущий context
+docker context use desktop-linux
+```
+
+Если после этого `docker version` всё равно не может подключиться (ошибка вида `The system cannot find the file specified` на пайпе `dockerDesktopLinuxEngine`) — значит сам движок Docker Desktop не запущен. На Windows:
+
+```bash
+start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+```
+
+Подождать 1-2 минуты (дольше, если до этого работал другой движок на WSL2 — тогда может помочь `wsl --shutdown` перед повторным запуском Docker Desktop), затем повторить `docker version` и `docker compose up --build`.
+
 БД поднимается пустой (только схема) — данные нужно засеять один раз:
 
 ```bash
