@@ -9,6 +9,10 @@ FROM node:22-alpine AS dev
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# prisma.config.ts requires DATABASE_URL to be set just to load, even though
+# `prisma generate` itself never connects to the database.
+ARG DATABASE_URL=mysql://user:pass@localhost:3306/db
+ENV DATABASE_URL=$DATABASE_URL
 RUN npx prisma generate
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
@@ -20,6 +24,10 @@ WORKDIR /app
 # needs to be a build arg, not just a runtime env var on the runner stage.
 ARG NEXT_PUBLIC_WS_URL
 ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
+# prisma.config.ts requires DATABASE_URL to be set just to load, even though
+# `prisma generate` itself never connects to the database.
+ARG DATABASE_URL=mysql://user:pass@localhost:3306/db
+ENV DATABASE_URL=$DATABASE_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
