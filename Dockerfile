@@ -28,6 +28,19 @@ ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
 # `prisma generate` itself never connects to the database.
 ARG DATABASE_URL=mysql://user:pass@localhost:3306/db
 ENV DATABASE_URL=$DATABASE_URL
+# src/lib/prisma.ts builds a connection pool config at module load, and
+# `next build` imports API routes to collect page data — so these need to be
+# set too, even though no connection is actually made at build time.
+ARG MYSQL_HOST=localhost
+ARG MYSQL_PORT=3306
+ARG MYSQL_USER=user
+ARG MYSQL_PASSWORD=pass
+ARG MYSQL_DATABASE=db
+ENV MYSQL_HOST=$MYSQL_HOST
+ENV MYSQL_PORT=$MYSQL_PORT
+ENV MYSQL_USER=$MYSQL_USER
+ENV MYSQL_PASSWORD=$MYSQL_PASSWORD
+ENV MYSQL_DATABASE=$MYSQL_DATABASE
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate

@@ -15,5 +15,10 @@ export function getMysqlPoolConfig(): PoolConfig {
     user: requireEnv('MYSQL_USER'),
     password: requireEnv('MYSQL_PASSWORD'),
     database: requireEnv('MYSQL_DATABASE'),
+    // MySQL 8's caching_sha2_password needs an RSA key exchange on a fresh
+    // (unencrypted) connection whenever the server's auth cache is cold, e.g.
+    // right after a restart. Without this the driver refuses the exchange
+    // and the failure surfaces only as an opaque pool timeout.
+    allowPublicKeyRetrieval: true,
   };
 }

@@ -18,6 +18,23 @@ services:
       timeout: 5s
       retries: 10
 
+  seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    command: ['npm', 'run', 'seed']
+    restart: 'no'
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
   web:
     build:
       context: .
@@ -29,6 +46,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      seed:
+        condition: service_completed_successfully
     environment:
       NODE_ENV: production
       MYSQL_HOST: mysql

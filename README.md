@@ -44,11 +44,15 @@ docker compose up --build
 
 Значения по умолчанию в `.env.example` рабочие — редактировать `.env` для локальной проверки не нужно.
 
+Схема БД и демо-данные (включая логин) накатываются автоматически при первом старте — отдельный шаг не нужен.
+
 После старта:
 
 - Приложение: http://localhost:3000
 - WebSocket-сервер: http://localhost:4001
 - MySQL: localhost:3306 (данные — в volume `mysql_data`, схема накатывается автоматически из `db/schema.sql`)
+
+Демо-логин: имя пользователя `admin`, пароль `admin123`.
 
 ### Если `docker compose up --build` не запускается
 
@@ -72,14 +76,6 @@ start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
 ```
 
 Подождать 1-2 минуты (дольше, если до этого работал другой движок на WSL2 — тогда может помочь `wsl --shutdown` перед повторным запуском Docker Desktop), затем повторить `docker version` и `docker compose up --build`.
-
-БД поднимается пустой (только схема) — данные нужно засеять один раз:
-
-```bash
-docker compose exec web npm run seed
-```
-
-Демо-логин: имя пользователя `admin`, пароль `admin123`.
 
 ## Локальная разработка (без Docker)
 
