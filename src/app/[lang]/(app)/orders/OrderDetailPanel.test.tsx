@@ -23,7 +23,11 @@ const mockOrder = {
   ],
 };
 
-let mockQuery = { data: mockOrder, isLoading: false, error: null };
+let mockQuery: { data: typeof mockOrder | null; isLoading: boolean; error: Error | null } = {
+  data: mockOrder,
+  isLoading: false,
+  error: null,
+};
 
 jest.mock('@/store/api', () => ({
   useGetOrderQuery: jest.fn(() => mockQuery),

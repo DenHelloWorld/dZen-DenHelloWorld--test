@@ -8,7 +8,10 @@ function mockDecimal(value: number): Prisma.Decimal {
 }
 
 function makeProduct(
-  overrides: Partial<ProductWithPrices> & { prices: { symbol: string; value: number }[] },
+  overrides: Omit<Partial<ProductWithPrices>, 'prices'> & {
+    id?: number;
+    prices: { symbol: string; value: number }[];
+  },
 ): ProductWithPrices {
   return {
     id: 1,

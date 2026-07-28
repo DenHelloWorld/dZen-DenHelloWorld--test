@@ -32,7 +32,10 @@ const mockInitialProducts = [
 
 const mockRouterReplace = jest.fn();
 const mockSetSelectedId = jest.fn();
-const mockUseLocalStorageValue = jest.fn(() => [null, mockSetSelectedId]);
+const mockUseLocalStorageValue = jest.fn((..._args: unknown[]): [unknown, jest.Mock] => [
+  null,
+  mockSetSelectedId,
+]);
 
 let mockQuery = { data: null, isFetching: false };
 const mockDeleteTrigger = jest.fn(() => ({ data: { success: true } }));

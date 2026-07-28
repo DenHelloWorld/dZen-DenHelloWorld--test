@@ -6,7 +6,10 @@ const mockGroups = [
   { type: 'Furniture', count: 3, avgPrices: [{ symbol: 'USD', value: 200, isDefault: true }] },
 ];
 
-const mockUseLocalStorageValue = jest.fn(() => [null, jest.fn()]);
+const mockUseLocalStorageValue = jest.fn((..._args: unknown[]): [unknown, jest.Mock] => [
+  null,
+  jest.fn(),
+]);
 
 jest.mock('@/hooks/useLocalStorageValue', () => ({
   useLocalStorageValue: (...args: unknown[]) => mockUseLocalStorageValue(...args),

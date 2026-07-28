@@ -23,7 +23,10 @@ const mockDeleteTrigger = jest.fn(() => ({ data: { success: true } }));
 const mockDeleteState = { isLoading: false, error: null, reset: jest.fn() };
 const mockDeleteMutation = [mockDeleteTrigger, mockDeleteState];
 
-const mockUseLocalStorageValue = jest.fn(() => [null, jest.fn()]);
+const mockUseLocalStorageValue = jest.fn((..._args: unknown[]): [unknown, jest.Mock] => [
+  null,
+  jest.fn(),
+]);
 
 jest.mock('@/store/api', () => ({
   useGetOrdersQuery: jest.fn(() => mockQuery),

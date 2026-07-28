@@ -20,7 +20,6 @@ const config: Config = {
     '!src/**/*.spec.{ts,tsx}',
     '!src/proxy.ts',
     '!src/lib/{prisma,jwt,mysql-config,products-data,orders-data,warehouses-data,groups-data}.ts',
-    '!src/app/api/**',
   ],
   coverageThreshold: {
     global: {

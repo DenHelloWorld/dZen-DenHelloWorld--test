@@ -18,7 +18,10 @@ const mockWarehouses = [
   },
 ];
 
-const mockUseLocalStorageValue = jest.fn(() => [null, jest.fn()]);
+const mockUseLocalStorageValue = jest.fn((..._args: unknown[]): [unknown, jest.Mock] => [
+  null,
+  jest.fn(),
+]);
 
 jest.mock('@/hooks/useLocalStorageValue', () => ({
   useLocalStorageValue: (...args: unknown[]) => mockUseLocalStorageValue(...args),
