@@ -1,0 +1,73 @@
+.products {
+  composes: d-flex flex-column h-100 from global;
+  min-height: 0;
+
+  &__header {
+    composes: d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4 from global;
+  }
+
+  &__title {
+    composes: h4 mb-0 d-flex align-items-baseline gap-2 from global;
+  }
+
+  &__title-count {
+    composes: text-secondary fw-normal from global;
+  }
+
+  &__filter {
+    composes: d-flex align-items-center gap-2 from global;
+  }
+
+  &__filter-label {
+    composes: text-secondary small text-nowrap from global;
+  }
+
+  &__filter-select {
+    composes: form-select form-select-sm from global;
+    width: 200px;
+  }
+
+  &__list {
+    composes: list-unstyled flex-fill h-100 overflow-y-auto from global;
+    min-height: 0;
+  }
+
+  &__row {
+    composes: card flex-row align-items-center gap-3 p-3 mb-2 shadow-sm from global;
+
+    &:hover {
+      background-color: rgba(139, 195, 74, 0.12);
+    }
+  }
+
+  &__row-title {
+    composes: text-truncate fw-semibold from global;
+    min-width: 0;
+    width: 220px;
+    flex-shrink: 0;
+    color: var(--color-text);
+  }
+
+  &__row-type {
+    composes: badge text-bg-light text-secondary fw-normal from global;
+    width: 110px;
+    flex-shrink: 0;
+  }
+
+  &__row-guarantee {
+    composes: d-flex flex-column text-secondary from global;
+    width: 220px;
+    flex-shrink: 0;
+  }
+
+  &__row-price {
+    composes: d-flex flex-column text-end fw-semibold from global;
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  &__row-order {
+    composes: d-flex align-items-center gap-2 text-secondary small text-truncate flex-fill from global;
+    min-width: 0;
+  }
+}

@@ -50,6 +50,26 @@ export interface OrderDetail {
   products: OrderProduct[];
 }
 
+export interface ProductPrice {
+  symbol: string;
+  value: number;
+  isDefault: boolean;
+}
+
+export interface ProductListItem {
+  id: number;
+  title: string;
+  type: string;
+  serialNumber: string | null;
+  isNew: boolean;
+  photo: string | null;
+  specification: string | null;
+  guaranteeStart: string | null;
+  guaranteeEnd: string | null;
+  orderTitle: string;
+  prices: ProductPrice[];
+}
+
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
@@ -86,8 +106,17 @@ export const api = createApi({
         { type: 'Order', id: 'LIST' },
       ],
     }),
+
+    getProducts: builder.query<ProductListItem[], string | undefined>({
+      query: (type) => (type ? `/products?type=${encodeURIComponent(type)}` : '/products'),
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetOrdersQuery, useGetOrderQuery, useDeleteOrderMutation } =
-  api;
+export const {
+  useLoginMutation,
+  useGetOrdersQuery,
+  useGetOrderQuery,
+  useDeleteOrderMutation,
+  useGetProductsQuery,
+} = api;
