@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDeleteProductMutation, useGetProductsQuery, type ProductListItem } from '@/store/api';
 import { formatDateLong, formatDateShort, formatCurrency } from '@/lib/format';
+import { extractApiErrorMessage } from '@/lib/api-error';
+import { useEscapeToClose } from '@/hooks/useEscapeToClose';
 import DeleteConfirmModal from '../_components/DeleteConfirmModal';
 import ProductDetailPanel from './ProductDetailPanel';
 import styles from './Products.module.scss';
@@ -31,32 +33,29 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
   const products = fetchedProducts ?? (selectedType === '' ? initialProducts : undefined);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
-  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+  const [deleteProduct, { isLoading: isDeleting, error: deleteError, reset: resetDelete }] =
+    useDeleteProductMutation();
 
+  /**
+   * While unfiltered, derive the option list from the freshest fetch so a
+   * just-deleted last-of-a-type product drops out of the dropdown; while a
+   * filter is active there's no unfiltered fetch to read from, so fall back
+   * to the SSR snapshot.
+   */
+  const productsForTypes =
+    selectedType === '' ? (fetchedProducts ?? initialProducts) : initialProducts;
   const types = useMemo(
-    () => Array.from(new Set(initialProducts.map((product) => product.type))).sort(),
-    [initialProducts],
+    () => Array.from(new Set(productsForTypes.map((product) => product.type))).sort(),
+    [productsForTypes],
   );
 
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key !== 'Escape') {
-        return;
-      }
-
-      if (pendingDeleteId !== null) {
-        setPendingDeleteId(null);
-      } else if (selectedId !== null) {
-        setSelectedId(null);
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [pendingDeleteId, selectedId]);
+  useEscapeToClose([
+    { isOpen: pendingDeleteId !== null, onDismiss: () => setPendingDeleteId(null) },
+    { isOpen: selectedId !== null, onDismiss: () => setSelectedId(null) },
+  ]);
 
   const handleConfirmDelete = async (): Promise<void> => {
-    if (pendingDeleteId === null) {
+    if (pendingDeleteId === null || isDeleting) {
       return;
     }
 
@@ -77,6 +76,7 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
     <div className={styles.products}>
       <div className={styles.products__header}>
         <h1 className={styles.products__title}>
+          <i className="bi bi-box-seam me-2" aria-hidden="true" />
           Products{' '}
           <span className={styles['products__title-count']}>/ {products?.length ?? '…'}</span>
         </h1>
@@ -151,7 +151,7 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
 
                 {selectedId === null ? (
                   <span className={styles['products__row-order']} title={product.orderTitle}>
-                    <i className="bi bi-box-seam" aria-hidden="true" />
+                    <i className="bi bi-receipt" aria-hidden="true" />
                     {product.orderTitle}
                   </span>
                 ) : null}
@@ -161,6 +161,7 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
                   className={styles['products__row-delete']}
                   onClick={(event) => {
                     event.stopPropagation();
+                    resetDelete();
                     setPendingDeleteId(product.id);
                   }}
                   aria-label={`Delete ${product.title}`}
@@ -186,7 +187,11 @@ export default function ProductsView({ initialProducts }: ProductsViewProps): Re
           entityLabel="product"
           title={pendingDeleteProduct.title}
           isDeleting={isDeleting}
-          onCancel={() => setPendingDeleteId(null)}
+          errorMessage={extractApiErrorMessage(deleteError)}
+          onCancel={() => {
+            resetDelete();
+            setPendingDeleteId(null);
+          }}
           onConfirm={() => {
             void handleConfirmDelete();
           }}

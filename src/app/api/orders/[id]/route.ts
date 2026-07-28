@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sumTotalsByCurrency } from '@/lib/order-currency';
+import { Prisma } from '@/generated/prisma/client';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -61,12 +62,14 @@ export async function DELETE(_request: Request, { params }: RouteParams): Promis
     return NextResponse.json({ error: 'Invalid order id' }, { status: 400 });
   }
 
-  const existing = await prisma.orders.findUnique({ where: { id } });
-  if (!existing) {
-    return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+  try {
+    await prisma.orders.delete({ where: { id } });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+    throw error;
   }
-
-  await prisma.orders.delete({ where: { id } });
 
   return NextResponse.json({ success: true });
 }

@@ -101,9 +101,14 @@ export const api = createApi({
 
     deleteOrder: builder.mutation<{ success: boolean }, number>({
       query: (id) => ({ url: `/orders/${id}`, method: 'DELETE' }),
+      /**
+       * Deleting an order cascades to delete all of its products in the DB,
+       * so the Products list/cache must be invalidated too.
+       */
       invalidatesTags: (_result, _error, id) => [
         { type: 'Order', id },
         { type: 'Order', id: 'LIST' },
+        { type: 'Product', id: 'LIST' },
       ],
     }),
 
@@ -120,9 +125,14 @@ export const api = createApi({
 
     deleteProduct: builder.mutation<{ success: boolean }, number>({
       query: (id) => ({ url: `/products/${id}`, method: 'DELETE' }),
+      /**
+       * A product's parent order's productsCount/totals change too, so the
+       * Orders list/cache must be invalidated alongside the Products one.
+       */
       invalidatesTags: (_result, _error, id) => [
         { type: 'Product', id },
         { type: 'Product', id: 'LIST' },
+        { type: 'Order', id: 'LIST' },
       ],
     }),
   }),

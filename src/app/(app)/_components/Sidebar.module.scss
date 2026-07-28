@@ -27,7 +27,7 @@
   }
 
   &__link {
-    composes: text-decoration-none text-secondary text-uppercase fw-semibold py-2 px-4 d-block from global;
+    composes: text-decoration-none text-secondary text-uppercase fw-semibold py-2 px-4 d-flex align-items-center gap-2 from global;
     font-size: 0.85rem;
     letter-spacing: 0.03em;
     border-left: 3px solid transparent;
@@ -40,5 +40,9 @@
       color: var(--color-accent) !important;
       border-left-color: var(--color-accent);
     }
+  }
+
+  &__link-icon {
+    font-size: 1rem;
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/generated/prisma/client';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -18,12 +19,14 @@ export async function DELETE(_request: Request, { params }: RouteParams): Promis
     return NextResponse.json({ error: 'Invalid product id' }, { status: 400 });
   }
 
-  const existing = await prisma.products.findUnique({ where: { id } });
-  if (!existing) {
-    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+  try {
+    await prisma.products.delete({ where: { id } });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+    throw error;
   }
-
-  await prisma.products.delete({ where: { id } });
 
   return NextResponse.json({ success: true });
 }

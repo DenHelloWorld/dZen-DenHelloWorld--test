@@ -9,6 +9,10 @@
     font-size: 1rem;
   }
 
+  &__brand-icon {
+    font-size: 1.75rem;
+  }
+
   &__status {
     composes: d-flex align-items-end gap-3 from global;
   }
@@ -29,5 +33,6 @@
 
   &__date {
     composes: d-flex align-items-center gap-2 fw-semibold from global;
+    font-variant-numeric: tabular-nums;
   }
 }

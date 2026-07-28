@@ -48,7 +48,10 @@ export default function TopMenu(): React.JSX.Element {
   return (
     <header className={styles['top-menu']}>
       <div className={styles['top-menu__brand']}>
-        <i className="bi bi-shield-fill-check" aria-hidden="true" />
+        <i
+          className={`bi bi-shield-fill-check ${styles['top-menu__brand-icon']}`}
+          aria-hidden="true"
+        />
         <span>INVENTORY</span>
       </div>
 

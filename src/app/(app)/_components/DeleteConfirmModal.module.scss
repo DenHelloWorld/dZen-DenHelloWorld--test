@@ -23,7 +23,19 @@
     composes: fw-semibold mb-0 from global;
   }
 
+  &__error {
+    composes: alert alert-danger mb-0 from global;
+  }
+
   &__footer {
     composes: modal-footer from global;
+  }
+
+  &__cancel {
+    composes: btn btn-outline-secondary from global;
+  }
+
+  &__confirm {
+    composes: btn btn-danger from global;
   }
 }

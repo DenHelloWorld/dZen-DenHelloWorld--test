@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDeleteOrderMutation, useGetOrdersQuery, type OrderListItem } from '@/store/api';
 import { formatDateLong, formatDateShort, formatCurrency } from '@/lib/format';
+import { extractApiErrorMessage } from '@/lib/api-error';
+import { useEscapeToClose } from '@/hooks/useEscapeToClose';
 import OrderDetailPanel from './OrderDetailPanel';
 import DeleteConfirmModal from '../_components/DeleteConfirmModal';
 import styles from './Orders.module.scss';
@@ -16,27 +18,16 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
   const orders = fetchedOrders ?? initialOrders;
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
-  const [deleteOrder, { isLoading: isDeleting }] = useDeleteOrderMutation();
+  const [deleteOrder, { isLoading: isDeleting, error: deleteError, reset: resetDelete }] =
+    useDeleteOrderMutation();
 
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key !== 'Escape') {
-        return;
-      }
-
-      if (pendingDeleteId !== null) {
-        setPendingDeleteId(null);
-      } else if (selectedId !== null) {
-        setSelectedId(null);
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [pendingDeleteId, selectedId]);
+  useEscapeToClose([
+    { isOpen: pendingDeleteId !== null, onDismiss: () => setPendingDeleteId(null) },
+    { isOpen: selectedId !== null, onDismiss: () => setSelectedId(null) },
+  ]);
 
   const handleConfirmDelete = async (): Promise<void> => {
-    if (pendingDeleteId === null) {
+    if (pendingDeleteId === null || isDeleting) {
       return;
     }
 
@@ -55,6 +46,7 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
   return (
     <div className={styles.orders}>
       <h1 className={styles.orders__title}>
+        <i className="bi bi-receipt me-2" aria-hidden="true" />
         Orders <span className={styles['orders__title-count']}>/ {orders.length}</span>
       </h1>
 
@@ -86,7 +78,7 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
               </span>
 
               <span className={styles['orders__row-meta']}>
-                <i className="bi bi-list-ul" aria-hidden="true" />
+                <i className="bi bi-box-seam" aria-hidden="true" />
                 {order.productsCount} products
               </span>
 
@@ -106,6 +98,7 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
                 className={styles['orders__row-delete']}
                 onClick={(event) => {
                   event.stopPropagation();
+                  resetDelete();
                   setPendingDeleteId(order.id);
                 }}
                 aria-label={`Delete ${order.title}`}
@@ -126,7 +119,11 @@ export default function OrdersView({ initialOrders }: OrdersViewProps): React.JS
           entityLabel="order"
           title={pendingDeleteOrder.title}
           isDeleting={isDeleting}
-          onCancel={() => setPendingDeleteId(null)}
+          errorMessage={extractApiErrorMessage(deleteError)}
+          onCancel={() => {
+            resetDelete();
+            setPendingDeleteId(null);
+          }}
           onConfirm={() => {
             void handleConfirmDelete();
           }}

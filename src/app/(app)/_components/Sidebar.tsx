@@ -7,14 +7,15 @@ import styles from './Sidebar.module.scss';
 interface NavItem {
   href: string;
   label: string;
+  icon: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/orders', label: 'Orders' },
-  { href: '/groups', label: 'Groups' },
-  { href: '/products', label: 'Products' },
-  { href: '/users', label: 'Users' },
-  { href: '/settings', label: 'Settings' },
+  { href: '/orders', label: 'Orders', icon: 'bi-receipt' },
+  { href: '/groups', label: 'Groups', icon: 'bi-diagram-3' },
+  { href: '/products', label: 'Products', icon: 'bi-box-seam' },
+  { href: '/users', label: 'Users', icon: 'bi-people' },
+  { href: '/settings', label: 'Settings', icon: 'bi-gear' },
 ];
 
 export default function Sidebar(): React.JSX.Element {
@@ -38,6 +39,7 @@ export default function Sidebar(): React.JSX.Element {
               href={item.href}
               className={`${styles.sidebar__link} ${isActive ? styles['sidebar__link--active'] : ''}`}
             >
+              <i className={`bi ${item.icon} ${styles['sidebar__link-icon']}`} aria-hidden="true" />
               {item.label}
             </Link>
           );
