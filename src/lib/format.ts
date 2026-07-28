@@ -1,9 +1,12 @@
-export function formatDateShort(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
+export function formatDateShort(iso: string, locale = 'en'): string {
+  return new Date(iso).toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+  });
 }
 
-export function formatDateLong(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', {
+export function formatDateLong(iso: string, locale = 'en'): string {
+  return new Date(iso).toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',

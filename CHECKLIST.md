@@ -80,9 +80,9 @@
 - [ ] TypeScript (backend + frontend)
 - [x] SSR (Next.js) — Orders страница: Server Component фетчит данные напрямую (Prisma), передаёт как props клиентскому компоненту; `export const dynamic = 'force-dynamic'` не даёт Next.js закэшировать это статически
 - [ ] Unit-тесты (backend + frontend)
-- [ ] i18n (ru/en)
+- [x] i18n (ru/en) — URL-based (`app/[lang]/`), Accept-Language detection, SSR-ready
 - [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
-- [ ] Web Storage (язык, последний фильтр типа продукта — в localStorage)
+- [x] Web Storage (язык, последний фильтр типа продукта — в localStorage)
 - [ ] Lazy Loading (chart, map — `next/dynamic`)
 - [ ] Charts (recharts)
 - [ ] Maps (react-leaflet, страница "Группы" — демо-локации складов)
@@ -104,7 +104,7 @@
 - [x] Orders: список (2 формата дат, сумма в 2 валютах, truncate+tooltip на длинных названиях), детали-панель сбоку без сабраута (title/сумма прихода/список продуктов, полные названия без обрезки), delete-модалка — на реальном API через RTK Query; SSR (Server Component фетчит `fetchOrdersList()` напрямую через Prisma, отдаёт как props — реальные данные в первом HTML, без спиннера); Escape закрывает модалку/панель (модалка в приоритете)
 - [x] Products: список (62 позиции), фильтр по типу (реальный REST-запрос `?type=`, не клиентская фильтрация), 2 формата дат гарантии, цена в 2 валютах, название прихода, truncate+tooltip на длинных названиях — на реальном API через RTK Query; SSR как у Orders (`fetchProductsList()` напрямую через Prisma, `force-dynamic`). Сверх ТЗ (по референс-скрину, которого нет в тексте ТЗ): клик по карточке → детали сбоку (serial number/condition/specification/гарантия/цена, без доп. фетча — все поля уже есть в списке), кнопка удаления + confirm-модалка (`DELETE /api/products/[id]`) — переиспользуют те же паттерны/компоненты, что и Orders (`DeleteConfirmModal` вынесен в общий `_components/`, принимает `entityLabel`)
 - [x] Анимации переходов (роуты / панель деталей / модалка)
-- [ ] `/settings` — i18n: переключатель языка (ru/en), выбор сохраняется в localStorage (Web Storage)
+- [x] `/settings` — i18n: переключатель языка (ru/en), выбор сохраняется в URL (Next.js i18n routing)
 - [ ] `/users` — JWT: защищённая роутом страница, показывает demo-профиль залогиненного пользователя
 - [ ] `/groups` — Maps (lazy, `next/dynamic`): демо-карта расположений складов (react-leaflet)
 - [ ] Charts (lazy, `next/dynamic`) на странице Products

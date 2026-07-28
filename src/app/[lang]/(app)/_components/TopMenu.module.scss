@@ -1,0 +1,37 @@
+.top-menu {
+  composes: d-flex align-items-center justify-content-between bg-white px-4 py-2 border-bottom flex-shrink-0 from global;
+  --bs-border-color: var(--color-border);
+  min-height: 64px;
+
+  &__brand {
+    composes: d-flex align-items-center from global;
+    color: var(--color-accent);
+  }
+
+  &__status {
+    composes: d-flex align-items-end gap-3 from global;
+  }
+
+  &__counter {
+    composes: d-flex align-items-center gap-2 badge text-bg-light fw-semibold from global;
+    color: var(--color-text-muted);
+  }
+
+  &__clock {
+    composes: d-flex flex-column align-items-end from global;
+    line-height: 1.3;
+  }
+
+  &__weekday {
+    composes: text-secondary small from global;
+  }
+
+  &__date {
+    composes: d-flex align-items-center gap-2 fw-semibold from global;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__lang {
+    composes: d-flex align-items-center gap-1 from global;
+  }
+}

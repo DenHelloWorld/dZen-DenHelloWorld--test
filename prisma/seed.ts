@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@/generated/prisma/client';
@@ -38,12 +39,12 @@ async function main(): Promise<void> {
         ? 'Bulk delivery of office equipment for the new headquarters building renovation'
         : orderIndex === 2
           ? 'Replacement hardware shipment for the regional branch office relocation'
-          : `Order ${orderIndex}`;
+          : `ORD-${20250000 + orderIndex}`;
 
     await prisma.orders.create({
       data: {
         title,
-        description: `Order ${orderIndex} description`,
+        description: `ORD-${20250000 + orderIndex}`,
         created_at: createdAt,
         products: {
           create: Array.from({ length: productCount }, (_, productOffset) => {

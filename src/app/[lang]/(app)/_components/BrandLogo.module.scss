@@ -1,0 +1,9 @@
+.brand {
+  composes: d-flex align-items-center gap-2 fw-bold text-uppercase from global;
+  color: var(--color-accent);
+  font-size: 1rem;
+
+  &__icon {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,53 @@
+.sidebar {
+  composes: d-flex flex-column align-items-center bg-white flex-shrink-0 border-end pt-4 from global;
+  --bs-border-color: var(--color-border);
+  width: 220px;
+
+  &__avatar {
+    composes: position-relative mb-4 from global;
+  }
+
+  &__avatar-icon {
+    font-size: 5rem;
+    color: var(--color-text-muted);
+  }
+
+  &__avatar-gear {
+    composes: d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm position-absolute from global;
+    right: -0.25rem;
+    bottom: -0.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.85rem;
+    color: var(--color-accent);
+  }
+
+  &__nav {
+    composes: d-flex flex-column w-100 from global;
+  }
+
+  &__link {
+    composes: text-decoration-none text-secondary text-uppercase fw-semibold py-2 px-4 d-flex align-items-center gap-2 from global;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    border-left: 3px solid transparent;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+
+    &:hover {
+      color: var(--color-text);
+      background-color: rgba(139, 195, 74, 0.12);
+    }
+
+    &--active {
+      color: var(--color-accent) !important;
+      border-left-color: var(--color-accent);
+    }
+  }
+
+  &__link-icon {
+    font-size: 1rem;
+  }
+}

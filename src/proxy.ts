@@ -2,22 +2,64 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifySessionToken, SESSION_COOKIE_NAME } from '@/lib/jwt';
 
-const PUBLIC_PAGE_PATHS = ['/login'];
+const LOCALES = ['ru', 'en'];
+const DEFAULT_LOCALE = 'ru';
+const LOCALE_COOKIE = 'locale';
 const PUBLIC_API_PREFIX = '/api/auth/login';
+
+function getLocale(request: NextRequest): string {
+  const saved = request.cookies.get(LOCALE_COOKIE)?.value;
+  if (saved === 'ru' || saved === 'en') return saved;
+  const acceptLang = request.headers.get('accept-language');
+  if (acceptLang?.startsWith('ru')) return 'ru';
+  return DEFAULT_LOCALE;
+}
+
+function parseLocale(pathname: string): { locale: string; rest: string } | null {
+  for (const locale of LOCALES) {
+    if (pathname === `/${locale}`) return { locale, rest: '/' };
+    if (pathname.startsWith(`/${locale}/`))
+      return { locale, rest: pathname.slice(locale.length + 1) };
+  }
+  return null;
+}
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith(PUBLIC_API_PREFIX)) {
+  // Static files & API — skip
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname === '/favicon.ico' ||
+    pathname.startsWith('/api/')
+  ) {
+    if (pathname.startsWith('/api/') && pathname !== PUBLIC_API_PREFIX) {
+      const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+      const session = token ? await verifySessionToken(token) : null;
+      if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     return NextResponse.next();
   }
 
+  // Locale detection
+  const parsed = parseLocale(pathname);
+
+  if (parsed === null) {
+    const locale = getLocale(request);
+    request.nextUrl.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
+    return NextResponse.redirect(request.nextUrl);
+  }
+
+  const { locale, rest } = parsed;
+
+  // Auth redirects
   const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
   const session = token ? await verifySessionToken(token) : null;
 
-  if (PUBLIC_PAGE_PATHS.includes(pathname)) {
+  if (rest === '/login') {
     if (session) {
-      return NextResponse.redirect(new URL('/orders', request.url));
+      request.nextUrl.pathname = `/${locale}/orders`;
+      return NextResponse.redirect(request.nextUrl);
     }
     return NextResponse.next();
   }
@@ -26,11 +68,8 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith('/api/')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  return NextResponse.redirect(new URL('/login', request.url));
+  request.nextUrl.pathname = `/${locale}/login`;
+  return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {

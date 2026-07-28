@@ -1,0 +1,29 @@
+.settings {
+  composes: d-flex flex-column from global;
+
+  &__title {
+    composes: h4 mb-4 d-flex align-items-baseline gap-2 from global;
+  }
+
+  &__card {
+    composes: card p-4 shadow-sm from global;
+    max-width: 400px;
+  }
+
+  &__label {
+    composes: d-block text-secondary small fw-semibold mb-2 text-uppercase from global;
+  }
+
+  &__options {
+    composes: d-flex gap-2 from global;
+  }
+
+  &__option {
+    composes: btn btn-outline-secondary from global;
+    flex: 1;
+
+    &--active {
+      composes: btn btn-success from global;
+    }
+  }
+}
