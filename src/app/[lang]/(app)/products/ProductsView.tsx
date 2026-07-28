@@ -5,6 +5,7 @@ import { useDeleteProductMutation, useGetProductsQuery, type ProductListItem } f
 import { formatDateLong, formatDateShort, formatCurrency } from '@/lib/format';
 import { extractApiErrorMessage } from '@/lib/api-error';
 import { useEscapeToClose } from '@/hooks/useEscapeToClose';
+import { useLocalStorageValue } from '@/hooks/useLocalStorageValue';
 import { t, type Locale } from '@/lib/i18n';
 import DeleteConfirmModal from '../_components/DeleteConfirmModal';
 import ProductDetailPanel from './ProductDetailPanel';
@@ -14,6 +15,8 @@ interface ProductsViewProps {
   initialProducts: ProductListItem[];
   lang: Locale;
 }
+
+const SELECTED_PRODUCT_STORAGE_KEY = 'products-last-selected-id';
 
 function formatGuaranteeShort(product: ProductListItem, lang: Locale): string {
   if (!product.guaranteeStart || !product.guaranteeEnd) {
@@ -36,7 +39,10 @@ export default function ProductsView({
   const [selectedType, setSelectedType] = useState('');
   const { data: fetchedProducts } = useGetProductsQuery(selectedType || undefined);
   const products = fetchedProducts ?? (selectedType === '' ? initialProducts : undefined);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useLocalStorageValue<number | null>(
+    SELECTED_PRODUCT_STORAGE_KEY,
+    null,
+  );
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [deleteProduct, { isLoading: isDeleting, error: deleteError, reset: resetDelete }] =
     useDeleteProductMutation();

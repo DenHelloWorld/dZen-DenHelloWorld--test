@@ -82,7 +82,7 @@
 - [ ] Unit-тесты (backend + frontend)
 - [x] i18n (ru/en) — URL-based (`app/[lang]/`), Accept-Language detection, SSR-ready
 - [x] JWT (демо-логин, натяжка под домен; токен в httpOnly-cookie, не в JS)
-- [x] Web Storage (язык, последний фильтр типа продукта — в localStorage)
+- [x] Web Storage — последняя открытая карточка товара запоминается в `localStorage` (`useLocalStorageValue`, синхронизация между вкладками) и переоткрывается при возврате на `/products`; язык хранится в cookie, см. i18n выше
 - [ ] Lazy Loading (chart, map — `next/dynamic`)
 - [ ] Charts (recharts)
 - [ ] Maps (react-leaflet, страница "Группы" — демо-локации складов)
