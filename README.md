@@ -1,5 +1,7 @@
 # Orders & Products
 
+[Деплой](https://d-zen-den-hello-world-test.vercel.app/en/orders)
+
 SPA "Orders & Products" — тестовое задание уровня Junior+ (React/Next.js).
 
 Оригинальный ТЗ: [`docs/assignment/JavaScript _ ReactJS.pdf`](docs/assignment/JavaScript%20_%20ReactJS.pdf). Полный статус выполнения по пунктам ТЗ — [`CHECKLIST.md`](CHECKLIST.md).
